@@ -70,6 +70,149 @@
   </style>
 </head>
 <body>
+ <body>
+<!-- แถบปุ่มลอยขวาล่าง -->
+<div style="position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:12px; z-index:1000;">
+  <!-- ปุ่มเครื่องคิดเลข -->
+  <button id="openCalc" 
+    style="padding:14px 18px; border:none; border-radius:12px; background:#2563eb; color:#fff; font-size:16px;
+    box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">🧮</button>
+
+  <!-- ปุ่มค้นหา Google -->
+  <button id="openGoogle" 
+    style="padding:14px 18px; border:none; border-radius:12px; background:#f59e0b; color:#fff; font-size:16px;
+    box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">🔍</button>
+</div>
+
+<!-- Popup เครื่องคิดเลข -->
+<div id="calcModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); 
+  display:flex; align-items:center; justify-content:center; z-index:999;">
+  <div style="background:#ffffff; border-radius:20px; padding:20px; width:320px; 
+    box-shadow:0 8px 30px rgba(0,0,0,.25);">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="margin:0; font-size:20px; font-weight:600;">เครื่องคิดเลข</h3>
+      <button id="closeCalc" 
+        style="border:none; background:#f87171; color:white; border-radius:50%; width:32px; height:32px; 
+        font-size:16px; cursor:pointer;">✕</button>
+    </div>
+
+    <input id="calcDisplay" type="text" readonly 
+      style="width:100%; padding:15px; font-size:22px; margin-bottom:15px; border:2px solid #e5e7eb; 
+      border-radius:12px; text-align:right; font-weight:bold; background:#f9fafb">
+
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+      <button class="cbtn clear">C</button>
+      <button class="cbtn back">⌫</button>
+      <button class="cbtn">%</button>
+      <button class="cbtn op">÷</button>
+
+      <button class="cbtn">7</button>
+      <button class="cbtn">8</button>
+      <button class="cbtn">9</button>
+      <button class="cbtn op">×</button>
+
+      <button class="cbtn">4</button>
+      <button class="cbtn">5</button>
+      <button class="cbtn">6</button>
+      <button class="cbtn op">−</button>
+
+      <button class="cbtn">1</button>
+      <button class="cbtn">2</button>
+      <button class="cbtn">3</button>
+      <button class="cbtn op">+</button>
+
+      <button class="cbtn">0</button>
+      <button class="cbtn">.</button>
+      <button class="cbtn equal" style="grid-column: span 2;">=</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  #calcModal .cbtn{
+    padding:16px; font-size:18px; border:none; border-radius:12px;
+    background:#f3f4f6; cursor:pointer; transition:.1s; font-weight:500;
+  }
+  #calcModal .cbtn:active{ transform:scale(0.95); }
+  #calcModal .cbtn:hover{ background:#e5e7eb }
+  #calcModal .cbtn.op{ background:#dbeafe; color:#1d4ed8; font-weight:600; }
+  #calcModal .cbtn.equal{ background:#2563eb; color:#fff; font-weight:600; }
+  #calcModal .cbtn.equal:hover{ background:#1e40af; }
+  #calcModal .cbtn.clear{ background:#fee2e2; color:#b91c1c; font-weight:600; }
+  #calcModal .cbtn.back{ background:#fef9c3; color:#92400e; font-weight:600; }
+</style>
+
+<!-- Popup Google Search -->
+<div id="googleModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); 
+  display:flex; align-items:center; justify-content:center; z-index:998;">
+  <div style="background:#ffffff; border-radius:20px; padding:20px; width:320px; 
+    box-shadow:0 8px 30px rgba(0,0,0,.25); display:flex; flex-direction:column; gap:12px;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0; font-size:20px; font-weight:600;">ค้นหา Google</h3>
+      <button id="closeGoogle" 
+        style="border:none; background:#f87171; color:white; border-radius:50%; width:32px; height:32px; 
+        font-size:16px; cursor:pointer;">✕</button>
+    </div>
+
+    <input id="googleQuery" type="text" placeholder="พิมพ์ข้อความที่ต้องการค้นหา" 
+      style="padding:12px; font-size:16px; border:1px solid #e5e7eb; border-radius:12px; width:100%">
+
+    <button id="googleSearch" style="padding:12px; font-size:16px; border:none; border-radius:12px;
+      background:#2563eb; color:#fff; cursor:pointer; font-weight:600;">ค้นหา</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  // --- เครื่องคิดเลข ---
+  const openCalc = document.getElementById("openCalc");
+  const closeCalc = document.getElementById("closeCalc");
+  const modal = document.getElementById("calcModal");
+  const display = document.getElementById("calcDisplay");
+  const buttons = modal.querySelectorAll(".cbtn");
+
+  openCalc.addEventListener("click", () => modal.style.display="flex");
+  closeCalc.addEventListener("click", () => modal.style.display="none");
+  modal.addEventListener("click", e => { if(e.target===modal) modal.style.display="none"; });
+
+  buttons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const val = btn.textContent;
+      if(btn.classList.contains("clear")) display.value = "";
+      else if(btn.classList.contains("back")) display.value = display.value.slice(0,-1);
+      else if(val==="="){
+        try{ 
+          let safeExpr = display.value.replace(/÷/g,"/").replace(/×/g,"*").replace(/−/g,"-").replace(/%/g,"/100");
+          display.value = String(eval(safeExpr)); 
+        }catch{ display.value="Error"; }
+      }else display.value += val;
+    });
+  });
+
+  // --- Google Search ---
+  const openGoogle = document.getElementById("openGoogle");
+  const closeGoogle = document.getElementById("closeGoogle");
+  const googleModal = document.getElementById("googleModal");
+  const googleQuery = document.getElementById("googleQuery");
+  const googleSearch = document.getElementById("googleSearch");
+
+  openGoogle.addEventListener("click", ()=> {
+    googleModal.style.display = "flex";
+    googleQuery.focus();
+  });
+  closeGoogle.addEventListener("click", ()=> googleModal.style.display = "none");
+  googleModal.addEventListener("click", e => { if(e.target===googleModal) googleModal.style.display="none"; });
+
+  googleSearch.addEventListener("click", () => {
+    const q = googleQuery.value.trim();
+    if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
+  });
+  googleQuery.addEventListener("keydown", e => { if(e.key==="Enter") googleSearch.click(); });
+})();
+</script>
+
   <header>
     <div class="wrap">
       <div class="title">
@@ -375,4 +518,3 @@
   </script>
 </body>
 </html>
-
