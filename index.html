@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Homework — บันทึกการบ้าน</title>
+  <meta name="theme-color" content="#ffffff" />
+  <style>
+    :root{
+      --bg:#f7f9fc; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --brand:#4f46e5; --brand-2:#22c55e; --accent:#f59e0b; --danger:#ef4444; --ok:#10b981;
+      --ring: 0 0 0 3px rgba(79,70,229,.15);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,'Noto Sans Thai',sans-serif; background:var(--bg); color:var(--ink)}
+    header{position:sticky; top:0; z-index:20; background:linear-gradient(180deg,#fff,rgba(255,255,255,.92)); backdrop-filter:saturate(1.2) blur(6px); border-bottom:1px solid #e5e7eb}
+    .wrap{max-width:1000px; margin:0 auto; padding:16px}
+    .title{display:flex; align-items:center; gap:12px}
+    .logo{width:36px; height:36px; border-radius:12px; background:conic-gradient(from 180deg,var(--brand),#60a5fa,#22c55e,#f59e0b,var(--brand)); box-shadow:0 6px 20px rgba(79,70,229,.2)}
+    h1{font-size:20px; margin:0}
+    .subtitle{color:var(--muted); font-size:13px}
+
+    /* layout */
+    .grid{display:grid; grid-template-columns:360px 1fr; gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+    /* card */
+    .card{background:var(--card); border:1px solid #e5e7eb; border-radius:16px; box-shadow:0 10px 30px rgba(17,24,39,.04)}
+    .card h2{margin:0 0 8px; font-size:18px}
+    .card .body{padding:16px}
+
+    /* form */
+    label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+    input, select, textarea, button{font:inherit}
+    .field{margin-bottom:12px}
+    .row{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+    @media (max-width:520px){.row{grid-template-columns:1fr}}
+    input[type="text"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea{
+      width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; outline:none; transition:.15s;
+    }
+    textarea{min-height:84px; resize:vertical}
+    input:focus, select:focus, textarea:focus{box-shadow:var(--ring); border-color:#c7d2fe}
+
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid transparent; background:var(--brand); color:#fff; cursor:pointer; transition:.2s; text-decoration:none}
+    .btn:hover{filter:brightness(1.05)}
+    .btn.secondary{background:#fff; color:var(--ink); border-color:#e5e7eb}
+    .btn.ghost{background:transparent; color:var(--ink); border-color:#e5e7eb}
+    .btn.ok{background:var(--ok)}
+    .btn.warn{background:var(--accent)}
+    .btn.danger{background:var(--danger)}
+
+    .toolbar{display:flex; flex-wrap:wrap; gap:8px}
+
+    /* list */
+    .list{display:grid; gap:12px; padding:12px}
+    .item{display:grid; grid-template-columns:1fr auto; gap:10px; padding:14px; border:1px solid #e5e7eb; border-radius:14px; background:#fff; align-items:center}
+    .item:hover{box-shadow:0 8px 22px rgba(0,0,0,.05)}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--muted)}
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; border:1px solid #e5e7eb}
+    .badge.ok{background:#ecfdf5; color:#065f46; border-color:#d1fae5}
+    .badge.due{background:#fff7ed; color:#9a3412; border-color:#fed7aa}
+    .badge.late{background:#fef2f2; color:#991b1b; border-color:#fecaca}
+
+    .searchbar{display:flex; gap:8px; flex-wrap:wrap; padding:8px}
+    .searchbar input{flex:1}
+
+    .empty{padding:24px; text-align:center; color:var(--muted)}
+
+    .footer{padding:16px; text-align:center; color:var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>บันทึกการบ้าน <span class="subtitle">— เลือกวิชา, วันที่สั่ง, เวลาส่ง, ค้นหา และแจ้งเตือน</span></h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:14px; padding-bottom:24px;">
+    <div class="grid">
+
+      <!-- ซ้าย: แบบฟอร์ม + การตั้งค่า -->
+      <section class="card">
+        <div class="body">
+          <h2>เพิ่มการบ้าน</h2>
+          <form id="hwForm">
+            <div class="field">
+              <label for="subject">วิชา</label>
+              <div class="row">
+                <select id="subject">
+                  <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+                  <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
+                  <option value="ภาษาไทย">ภาษาไทย</option>
+                  <option value="ภาษาอังกฤษ">ภาษาอังกฤษ</option>
+                  <option value="สังคมศึกษา">สังคมศึกษา</option>
+                  <option value="อื่น ๆ">อื่น ๆ… (พิมพ์เอง)</option>
+                </select>
+                <input id="subjectCustom" type="text" placeholder="พิมพ์ชื่อวิชาเอง" style="display:none">
+              </div>
+            </div>
+
+            <div class="field row">
+              <div>
+                <label for="assigned">วันที่สั่ง</label>
+                <input id="assigned" type="date" required>
+              </div>
+              <div>
+                <label for="due">วัน-เวลาส่ง</label>
+                <input id="due" type="datetime-local" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="detail">รายละเอียด</label>
+              <textarea id="detail" placeholder="เช่น แบบฝึกหัดหน้า 25 ข้อ 1-10"></textarea>
+            </div>
+
+            <div class="toolbar">
+              <button class="btn" type="submit">➕ บันทึกการบ้าน</button>
+              <button class="btn secondary" type="reset" id="resetBtn">รีเซ็ต</button>
+            </div>
+          </form>
+
+          <hr style="margin:16px 0; border:none; border-top:1px solid #e5e7eb">
+
+          <h2>การแจ้งเตือน</h2>
+          <div class="field">
+            <div class="toolbar">
+              <button class="btn ghost" id="permBtn">🔔 ขอสิทธิแจ้งเตือน</button>
+              <button class="btn ghost" id="testNoti">ทดสอบแจ้งเตือน</button>
+              <button class="btn ghost" id="testSound">ทดสอบเสียง</button>
+            </div>
+            <p class="subtitle" style="margin-top:8px">* มือถือบางรุ่นต้องเปิดสิทธิแจ้งเตือนเองในระบบด้วย และเสียงจะดังได้หลังมีการกดโต้ตอบหน้าเว็บ</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ขวา: ค้นหา + รายการงาน -->
+      <section class="card">
+        <div class="body">
+          <h2>การบ้านของฉัน</h2>
+          <div class="searchbar">
+            <input id="q" type="text" placeholder="ค้นหาโดย วิชา/รายละเอียด">
+            <select id="statusFilter" style="max-width:210px">
+              <option value="all">แสดงทั้งหมด</option>
+              <option value="todo">ยังไม่ทำ</option>
+              <option value="done">ทำเสร็จแล้ว</option>
+              <option value="late">เลยกำหนด</option>
+            </select>
+          </div>
+          <div class="list" id="list"></div>
+          <div class="empty" id="empty" style="display:none">ยังไม่มีงาน — เพิ่มงานฝั่งซ้ายก่อนนะ</div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="footer">ข้อมูลบันทึกในเครื่องของคุณ (Local Storage) — ทำงานออฟไลน์ได้</div>
+  </main>
+
+  <audio id="ding" preload="auto">
+    <source src="data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAAACAAAC4AAAACAAACcQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mp3">
+  </audio>
+
+  <script>
+  ;(()=>{
+    const $ = (q,root=document)=>root.querySelector(q);
+    const $$ = (q,root=document)=>[...root.querySelectorAll(q)];
+
+    /*** STATE ***/
+    const LS_KEY = 'homework.v1';
+    let items = load();
+    let timeouts = new Map();
+    let leadMinutes = 30; // แจ้งเตือนล่วงหน้า (นาที)
+
+    function load(){
+      try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ return [] }
+    }
+    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(items)); }
+
+    /*** UTIL ***/
+    const fmt = new Intl.DateTimeFormat('th-TH',{dateStyle:'medium', timeStyle:'short'});
+    const fmtDate = new Intl.DateTimeFormat('th-TH',{dateStyle:'medium'});
+    function now(){ return Date.now(); }
+    function isLate(it){ return !it.done && new Date(it.due).getTime() < now(); }
+    function timeLeft(ms){
+      const s = Math.max(0, Math.floor(ms/1000));
+      const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60);
+      if(d>0) return `${d} วัน ${h} ชม.`; if(h>0) return `${h} ชม. ${m} นาที`; return `${m} นาที`;
+    }
+
+    /*** SUBJECT input toggle ***/
+    const subjectSel = $('#subject');
+    const subjectCustom = $('#subjectCustom');
+    subjectSel.addEventListener('change',()=>{
+      const custom = subjectSel.value.includes('อื่น');
+      subjectCustom.style.display = custom ? 'block' : 'none';
+      if(custom) subjectCustom.focus();
+    });
+
+    /*** FORM submit ***/
+    $('#hwForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const subject = subjectSel.value.includes('อื่น') ? subjectCustom.value.trim() : subjectSel.value;
+      if(!subject){ alert('กรุณาใส่ชื่อวิชา'); return; }
+      const assigned = $('#assigned').value;
+      const due = $('#due').value;
+      if(!assigned || !due){ alert('กรุณาใส่วันที่สั่งและวันเวลาส่ง'); return; }
+      const detail = $('#detail').value.trim();
+
+      const it = { id: crypto.randomUUID(), subject, assigned, due, detail, done:false, createdAt: now() };
+      items.unshift(it); save();
+      $('#hwForm').reset(); subjectCustom.style.display='none';
+      render(); scheduleOne(it);
+    });
+
+    $('#resetBtn').addEventListener('click',()=>{ subjectCustom.style.display='none'; });
+
+    /*** RENDER ***/
+    const list = $('#list'); const empty = $('#empty');
+    const q = $('#q'); const statusFilter = $('#statusFilter');
+    q.addEventListener('input', render); statusFilter.addEventListener('change', render);
+
+    function render(){
+      list.innerHTML='';
+      const term = q.value.toLowerCase();
+      const filtered = items.filter(it=>{
+        const match = (it.subject+" "+it.detail).toLowerCase().includes(term);
+        const late = isLate(it);
+        if(statusFilter.value==='todo') return match && !it.done && !late;
+        if(statusFilter.value==='done') return match && it.done;
+        if(statusFilter.value==='late') return match && late;
+        return match;
+      });
+
+      if(filtered.length===0){ empty.style.display='block'; return } else empty.style.display='none';
+
+      for(const it of filtered){
+        const dueTs = new Date(it.due).getTime();
+        const late = isLate(it);
+        const wrap = document.createElement('div'); wrap.className='item';
+        const left = document.createElement('div');
+        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='6px';
+
+        left.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+            <strong style="font-size:16px">${escapeHtml(it.subject)}</strong>
+            ${badge(it)}
+          </div>
+          <div class="meta">
+            <span>สั่ง: ${fmtDate.format(new Date(it.assigned))}</span>
+            <span>ส่ง: ${fmt.format(new Date(it.due))}</span>
+            ${!it.done ? `<span>เหลือเวลา: ${late?'<b style="color:#b91c1c">เลยกำหนด</b>': timeLeft(dueTs-now())}</span>`:''}
+          </div>
+          ${it.detail?`<div style="margin-top:6px">${escapeHtml(it.detail)}</div>`:''}
+        `;
+
+        const btnDone = button(it.done? 'ย้อนเป็นยังไม่ทำ' : 'ทำเสร็จแล้ว', it.done? 'warn' : 'ok', ()=>{
+          it.done = !it.done; save(); render();
+        });
+        const btnBell = button('เตือนล่วงหน้า', 'ghost', ()=>{
+          const m = prompt('ต้องการเตือนล่วงหน้ากี่นาที?', String(leadMinutes));
+          if(m===null) return; const n = parseInt(m,10); if(Number.isNaN(n) || n<0){ alert('ใส่ตัวเลขนาทีให้ถูกต้อง'); return; }
+          leadMinutes = n; scheduleOne(it,true);
+        });
+        const btnEdit = button('แก้ไข','secondary',()=> editItem(it));
+        const btnDel  = button('ลบ','danger',()=>{ if(confirm('ลบงานนี้?')){ cancelSchedule(it.id); items=items.filter(x=>x.id!==it.id); save(); render(); } });
+
+        right.append(btnDone, btnBell, btnEdit, btnDel);
+        wrap.append(left, right); list.append(wrap);
+      }
+    }
+
+    function badge(it){
+      if(it.done) return `<span class="badge ok">✔️ ทำเสร็จแล้ว</span>`;
+      if(isLate(it)) return `<span class="badge late">⏰ เลยกำหนด</span>`;
+      return `<span class="badge due">📝 ยังไม่ทำ</span>`;
+    }
+
+    function button(text, kind, onClick){
+      const b = document.createElement('button'); b.className = `btn ${kind}`; b.type='button'; b.textContent=text; b.addEventListener('click', onClick); return b;
+    }
+
+    function editItem(it){
+      const subject = prompt('แก้ไขวิชา', it.subject); if(subject===null) return;
+      const assigned = prompt('แก้ไขวันที่สั่ง (YYYY-MM-DD)', it.assigned); if(assigned===null) return;
+      const due = prompt('แก้ไขวันเวลาส่ง (YYYY-MM-DDTHH:MM)', it.due.slice(0,16)); if(due===null) return;
+      const detail = prompt('แก้ไขรายละเอียด', it.detail||''); if(detail===null) return;
+      Object.assign(it,{subject,assigned,due,detail}); save(); render(); scheduleOne(it);
+    }
+
+    function escapeHtml(s){ return s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+
+    /*** NOTIFICATION + SOUND ***/
+    const permBtn = $('#permBtn');
+    const testNoti = $('#testNoti');
+    const testSound = $('#testSound');
+    const ding = $('#ding');
+
+    permBtn.addEventListener('click', askPermission);
+    testNoti.addEventListener('click', ()=> notify('ทดสอบแจ้งเตือน', 'การแจ้งเตือนทำงานแล้ว 🎉'));
+    testSound.addEventListener('click', ()=> playDing());
+
+    async function askPermission(){
+      try{
+        if('Notification' in window){
+          const res = await Notification.requestPermission();
+          alert('สถานะสิทธิแจ้งเตือน: '+res);
+        }else{
+          alert('เบราว์เซอร์ไม่รองรับ Notification API');
+        }
+      }catch(e){ console.error(e); alert('ขอสิทธิไม่สำเร็จ'); }
+    }
+
+    async function notify(title, body){
+      try{
+        if(!('Notification' in window)) return;
+        if(Notification.permission==='granted'){
+          if(navigator.serviceWorker?.controller){
+            const reg = await navigator.serviceWorker.getRegistration();
+            if(reg) { reg.showNotification(title,{ body, icon: undefined, badge: undefined }); }
+            else new Notification(title,{ body });
+          }else{
+            new Notification(title,{ body });
+          }
+        }
+      }catch(e){ console.warn('notify error', e); }
+    }
+
+    function playDing(){ try{ ding.currentTime=0; ding.play(); if(navigator.vibrate) navigator.vibrate([100,50,100]); }catch{} }
+
+    /*** SCHEDULE ***/
+    function scheduleAll(){
+      // clear
+      for(const id of timeouts.keys()) cancelSchedule(id);
+      for(const it of items) scheduleOne(it);
+    }
+
+    function scheduleOne(it, showToast=false){
+      cancelSchedule(it.id);
+      if(it.done) return;
+      const due = new Date(it.due).getTime();
+      const when = due - leadMinutes*60*1000;
+      const delay = when - now();
+      if(delay <= 0){ return; }
+      const tid = setTimeout(()=>{
+        notify(`การบ้าน ${it.subject}`, `ใกล้ถึงเวลาส่งใน ${leadMinutes} นาที`);
+        playDing();
+      }, Math.min(delay, 2**31-1));
+      timeouts.set(it.id, tid);
+      if(showToast) alert(`ตั้งแจ้งเตือนล่วงหน้า ${leadMinutes} นาที สำหรับวิชา ${it.subject}`);
+    }
+
+    function cancelSchedule(id){ const t = timeouts.get(id); if(t){ clearTimeout(t); timeouts.delete(id); } }
+
+    /*** SERVICE WORKER (inline) ***/
+    if('serviceWorker' in navigator){
+      const code = `self.addEventListener('install',e=>self.skipWaiting()); self.addEventListener('activate',e=>self.clients.claim());`;
+      const blob = new Blob([code],{type:'text/javascript'});
+      const url = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url).catch(()=>{});
+    }
+
+    // init
+    render(); scheduleAll();
+
+    // live countdown refresh (ทุก 30 วินาที)
+    setInterval(()=>{ if(document.hidden) return; render(); }, 30000);
+  })();
+  </script>
+</body>
+</html>
