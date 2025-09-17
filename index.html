@@ -1,504 +1,226 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Homework — บันทึกการบ้าน</title>
-  <meta name="theme-color" content="#ffffff" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รับโค้ดสินค้า</title>
   <style>
-    :root{
-      --bg:#f7f9fc; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --brand:#4f46e5; --brand-2:#22c55e; --accent:#f59e0b; --danger:#ef4444; --ok:#10b981;
-      --ring: 0 0 0 3px rgba(79,70,229,.15);
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f6fff6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,'Noto Sans Thai',sans-serif; background:var(--bg); color:var(--ink)}
-    header{position:sticky; top:0; z-index:20; background:linear-gradient(180deg,#fff,rgba(255,255,255,.92)); backdrop-filter:saturate(1.2) blur(6px); border-bottom:1px solid #e5e7eb}
-    .wrap{max-width:1000px; margin:0 auto; padding:16px}
-    .title{display:flex; align-items:center; gap:12px}
-    .logo{width:36px; height:36px; border-radius:12px; background:conic-gradient(from 180deg,var(--brand),#60a5fa,#22c55e,#f59e0b,var(--brand)); box-shadow:0 6px 20px rgba(79,70,229,.2)}
-    h1{font-size:20px; margin:0}
-    .subtitle{color:var(--muted); font-size:13px}
 
-    /* layout */
-    .grid{display:grid; grid-template-columns:360px 1fr; gap:16px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}}
-
-    /* card */
-    .card{background:var(--card); border:1px solid #e5e7eb; border-radius:16px; box-shadow:0 10px 30px rgba(17,24,39,.04)}
-    .card h2{margin:0 0 8px; font-size:18px}
-    .card .body{padding:16px}
-
-    /* form */
-    label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
-    input, select, textarea, button{font:inherit}
-    .field{margin-bottom:12px}
-    .row{display:grid; gap:10px; grid-template-columns:1fr 1fr}
-    @media (max-width:520px){.row{grid-template-columns:1fr}}
-    input[type="text"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea{
-      width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; outline:none; transition:.15s;
+    header {
+      text-align: center;
+      padding: 25px 15px 15px;
     }
-    textarea{min-height:84px; resize:vertical}
-    input:focus, select:focus, textarea:focus{box-shadow:var(--ring); border-color:#c7d2fe}
 
-    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid transparent; background:var(--brand); color:#fff; cursor:pointer; transition:.2s; text-decoration:none}
-    .btn:hover{filter:brightness(1.05)}
-    .btn.secondary{background:#fff; color:var(--ink); border-color:#e5e7eb}
-    .btn.ghost{background:transparent; color:var(--ink); border-color:#e5e7eb}
-    .btn.ok{background:var(--ok)}
-    .btn.warn{background:var(--accent)}
-    .btn.danger{background:var(--danger)}
+    header img {
+      max-width: 100px;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
 
-    .toolbar{display:flex; flex-wrap:wrap; gap:8px}
+    header h1 {
+      font-size: 22px;
+      color: #1b8d3f;
+      margin: 0;
+    }
 
-    /* list */
-    .list{display:grid; gap:12px; padding:12px}
-    .item{display:grid; grid-template-columns:1fr auto; gap:10px; padding:14px; border:1px solid #e5e7eb; border-radius:14px; background:#fff; align-items:center}
-    .item:hover{box-shadow:0 8px 22px rgba(0,0,0,.05)}
-    .meta{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--muted)}
-    .badge{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; border:1px solid #e5e7eb}
-    .badge.ok{background:#ecfdf5; color:#065f46; border-color:#d1fae5}
-    .badge.due{background:#fff7ed; color:#9a3412; border-color:#fed7aa}
-    .badge.late{background:#fef2f2; color:#991b1b; border-color:#fecaca}
+    .container {
+      width: 90%;
+      max-width: 430px;
+      background: white;
+      padding: 20px;
+      margin-top: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
 
-    .searchbar{display:flex; gap:8px; flex-wrap:wrap; padding:8px}
-    .searchbar input{flex:1}
+    h2 {
+      color: #1b8d3f;
+      margin-bottom: 15px;
+    }
 
-    .empty{padding:24px; text-align:center; color:var(--muted)}
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
 
-    .footer{padding:16px; text-align:center; color:var(--muted); font-size:12px}
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    input[type="file"] {
+      border: none;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1b8d3f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #157533;
+    }
+
+    .coupon {
+      display: none;
+      width: 90%;
+      max-width: 430px;
+      margin-top: 20px;
+      padding: 22px;
+      background: white;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .coupon h3 {
+      color: #1b8d3f;
+      margin-bottom: 15px;
+    }
+
+    .coupon p {
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    .coupon img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .link-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #1b8d3f;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .link-btn:hover {
+      background: #157533;
+    }
+
+    .steps {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .steps h3 {
+      color: #1b8d3f;
+      margin-bottom: 8px;
+    }
+
+    .steps p {
+      margin: 6px 0;
+    }
   </style>
 </head>
 <body>
- <!-- หมวดหมู่ตัวช่วยลอยขวาล่าง -->
-<div id="helperGroup" style="position:fixed; bottom:20px; right:20px; z-index:1000; display:flex; flex-direction:column; gap:12px; align-items:flex-end;">
-  <!-- ปุ่มหลักบอกจำนวนตัวช่วย -->
-  <button id="toggleHelpers" style="padding:14px 18px; border:none; border-radius:12px; background:#8b5cf6; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">
-    ตัวช่วย 3 ▾
-  </button>
-
-  <!-- กลุ่มปุ่มตัวช่วย (ซ่อนก่อน) -->
-  <div id="helperButtons" style="display:none; flex-direction:column; gap:12px; align-items:flex-end; margin-top:4px;">
-    <button id="openCalc" style="padding:14px 18px; border:none; border-radius:12px; background:#2563eb; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">🧮 เครื่องคิดเลข</button>
-    <button id="openGoogle" style="padding:14px 18px; border:none; border-radius:12px; background:#f59e0b; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">🔍 Google</button>
-    <button id="openChatGPT" style="padding:14px 18px; border:none; border-radius:12px; background:#10b981; color:#fff; font-size:16px; box-shadow:0 4px 12px rgba(0,0,0,.3); cursor:pointer;">🤖 ChatGPT</button>
-  </div>
-</div>
-
-<!-- Popup เครื่องคิดเลข -->
-<div id="calcModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:999;">
-  <div style="background:#ffffff; border-radius:20px; padding:20px; width:320px; box-shadow:0 8px 30px rgba(0,0,0,.25);">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0; font-size:20px; font-weight:600;">เครื่องคิดเลข</h3>
-      <button id="closeCalc" style="border:none; background:#f87171; color:white; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">✕</button>
-    </div>
-    <input id="calcDisplay" type="text" readonly style="width:100%; padding:15px; font-size:22px; margin-bottom:15px; border:2px solid #e5e7eb; border-radius:12px; text-align:right; font-weight:bold; background:#f9fafb">
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
-      <button class="cbtn clear">C</button>
-      <button class="cbtn back">⌫</button>
-      <button class="cbtn">%</button>
-      <button class="cbtn op">÷</button>
-      <button class="cbtn">7</button>
-      <button class="cbtn">8</button>
-      <button class="cbtn">9</button>
-      <button class="cbtn op">×</button>
-      <button class="cbtn">4</button>
-      <button class="cbtn">5</button>
-      <button class="cbtn">6</button>
-      <button class="cbtn op">−</button>
-      <button class="cbtn">1</button>
-      <button class="cbtn">2</button>
-      <button class="cbtn">3</button>
-      <button class="cbtn op">+</button>
-      <button class="cbtn">0</button>
-      <button class="cbtn">.</button>
-      <button class="cbtn equal" style="grid-column: span 2;">=</button>
-    </div>
-  </div>
-</div>
-
-<!-- Popup Google Search -->
-<div id="googleModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:999;">
-  <div style="background:#fff; padding:20px; border-radius:16px; width:320px; box-shadow:0 8px 30px rgba(0,0,0,.25);">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0; font-size:20px; font-weight:600;">ค้นหา Google</h3>
-      <button id="closeGoogle" style="border:none; background:#f87171; color:white; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">✕</button>
-    </div>
-    <input id="googleQuery" type="text" placeholder="พิมพ์ข้อความค้นหา" style="width:100%; padding:12px; font-size:16px; margin-bottom:12px; border:1px solid #e5e7eb; border-radius:12px;">
-    <button id="googleSearch" style="width:100%; padding:12px; background:#f59e0b; color:#fff; font-size:16px; border:none; border-radius:12px; cursor:pointer;">🔍 ค้นหา</button>
-  </div>
-</div>
-
-<style>
-#calcModal .cbtn{ padding:16px; font-size:18px; border:none; border-radius:12px; background:#f3f4f6; cursor:pointer; transition:.1s; font-weight:500; }
-#calcModal .cbtn:active{ transform:scale(0.95); }
-#calcModal .cbtn:hover{ background:#e5e7eb }
-#calcModal .cbtn.op{ background:#dbeafe; color:#1d4ed8; font-weight:600; }
-#calcModal .cbtn.equal{ background:#2563eb; color:#fff; font-weight:600; }
-#calcModal .cbtn.equal:hover{ background:#1e40af; }
-#calcModal .cbtn.clear{ background:#fee2e2; color:#b91c1c; font-weight:600; }
-#calcModal .cbtn.back{ background:#fef9c3; color:#92400e; font-weight:600; }
-</style>
-
-<script>
-(() => {
-  // --- Toggle หมวดหมู่ตัวช่วย ---
-  const toggleBtn = document.getElementById("toggleHelpers");
-  const helperButtons = document.getElementById("helperButtons");
-  toggleBtn.addEventListener("click", ()=> {
-    helperButtons.style.display = (helperButtons.style.display==="flex") ? "none":"flex";
-  });
-
-  // --- เครื่องคิดเลข ---
-  const openCalc = document.getElementById("openCalc");
-  const closeCalc = document.getElementById("closeCalc");
-  const modal = document.getElementById("calcModal");
-  const display = document.getElementById("calcDisplay");
-  const buttons = modal.querySelectorAll(".cbtn");
-
-  openCalc.addEventListener("click", () => modal.style.display="flex");
-  closeCalc.addEventListener("click", () => modal.style.display="none");
-  modal.addEventListener("click", e => { if(e.target===modal) modal.style.display="none"; });
-
-  buttons.forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const val = btn.textContent;
-      if(btn.classList.contains("clear")) display.value = "";
-      else if(btn.classList.contains("back")) display.value = display.value.slice(0,-1);
-      else if(val==="="){
-        try{ 
-          let safeExpr = display.value.replace(/÷/g,"/").replace(/×/g,"*").replace(/−/g,"-").replace(/%/g,"/100");
-          display.value = String(eval(safeExpr)); 
-        }catch{ display.value="Error"; }
-      }else display.value += val;
-    });
-  });
-
-  // --- Google Search ---
-  const openGoogle = document.getElementById("openGoogle");
-  const closeGoogle = document.getElementById("closeGoogle");
-  const googleModal = document.getElementById("googleModal");
-  const googleQuery = document.getElementById("googleQuery");
-  const googleSearch = document.getElementById("googleSearch");
-
-  openGoogle.addEventListener("click", ()=> { googleModal.style.display="flex"; googleQuery.focus(); });
-  closeGoogle.addEventListener("click", ()=> googleModal.style.display="none");
-  googleModal.addEventListener("click", e => { if(e.target===googleModal) googleModal.style.display="none"; });
-
-  googleSearch.addEventListener("click", () => {
-    const q = googleQuery.value.trim();
-    if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
-  });
-  googleQuery.addEventListener("keydown", e => { if(e.key==="Enter") googleSearch.click(); });
-
-  // --- ChatGPT ---
-  const openChatGPT = document.getElementById("openChatGPT");
-  openChatGPT.addEventListener("click", ()=> { window.open("https://chat.openai.com/", "_blank"); });
-})();
-</script>
-
   <header>
-    <div class="wrap">
-      <div class="title">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>School Work <span class="subtitle">— เลือกวิชา, วันที่สั่ง, เวลาส่ง, ค้นหา และแจ้งเตือน</span></h1>
-        </div>
-      </div>
-    </div>
+    <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" alt="Logo">
+    <h1>รับสินค้า RISZY SHOP</h1>
   </header>
 
-  <main class="wrap" style="padding-top:14px; padding-bottom:24px;">
-    <div class="grid">
+  <div class="container" id="formSection">
+    <h2>กรอกข้อมูล</h2>
 
-      <!-- ซ้าย: แบบฟอร์ม + การตั้งค่า -->
-      <section class="card">
-        <div class="body">
-          <h2>เพิ่มการบ้าน</h2>
-          <form id="hwForm">
-            <div class="field">
-              <label for="subject">วิชา</label>
-              <div class="row">
-                <select id="subject">
-                  <option value="คณิตศาสตร์">คณิตศาสตร์</option>
-                  <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
-                  <option value="ภาษาไทย">ภาษาไทย</option>
-                  <option value="ภาษาอังกฤษ">ภาษาอังกฤษ</option>
-                  <option value="สังคมศึกษา">สังคมศึกษา</option>
-                  <option value="อื่น ๆ">อื่น ๆ… (พิมพ์เอง)</option>
-                </select>
-                <input id="subjectCustom" type="text" placeholder="พิมพ์ชื่อวิชาเอง" style="display:none">
-              </div>
-            </div>
+    <label for="uid">UID</label>
+    <input type="text" id="uid" placeholder="ใส่ UID ของคุณ">
 
-            <div class="field row">
-              <div>
-                <label for="assigned">วันที่สั่ง</label>
-                <input id="assigned" type="date" required>
-              </div>
-              <div>
-                <label for="due">วัน-เวลาส่ง</label>
-                <input id="due" type="datetime-local" required>
-              </div>
-            </div>
+    <label for="name">ชื่อในเกม</label>
+    <input type="text" id="name" placeholder="ใส่ชื่อในเกม">
 
-            <div class="field">
-              <label for="detail">รายละเอียด</label>
-              <textarea id="detail" placeholder="เช่น แบบฝึกหัดหน้า 25 ข้อ 1-10"></textarea>
-            </div>
+    <label for="code">โค้ดสินค้า</label>
+    <input type="text" id="code" placeholder="ใส่โค้ดสินค้า">
 
-            <div class="toolbar">
-              <button class="btn" type="submit">➕ บันทึกการบ้าน</button>
-              <button class="btn secondary" type="reset" id="resetBtn">รีเซ็ต</button>
-            </div>
-          </form>
+    <label for="image">เลือกรูปโปรไฟล์ในเกม (ถ้ามี)</label>
+    <input type="file" id="image" accept="image/*">
 
-          <hr style="margin:16px 0; border:none; border-top:1px solid #e5e7eb">
+    <button onclick="showCoupon()">ยืนยัน</button>
 
-          <h2>การแจ้งเตือน</h2>
-          <div class="field">
-            <div class="toolbar">
-              <button class="btn ghost" id="permBtn">🔔 ขอสิทธิแจ้งเตือน</button>
-              <button class="btn ghost" id="testNoti">ทดสอบแจ้งเตือน</button>
-              <button class="btn ghost" id="testSound">ทดสอบเสียง</button>
-            </div>
-            <p class="subtitle" style="margin-top:8px">* มือถือบางรุ่นต้องเปิดสิทธิแจ้งเตือนเองในระบบด้วย และเสียงจะดังได้หลังมีการกดโต้ตอบหน้าเว็บ</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ขวา: ค้นหา + รายการงาน -->
-      <section class="card">
-        <div class="body">
-          <h2>การบ้านของฉัน</h2>
-          <div class="searchbar">
-            <input id="q" type="text" placeholder="ค้นหาโดย วิชา/รายละเอียด">
-            <select id="statusFilter" style="max-width:210px">
-              <option value="all">แสดงทั้งหมด</option>
-              <option value="todo">ยังไม่ทำ</option>
-              <option value="done">ทำเสร็จแล้ว</option>
-              <option value="late">เลยกำหนด</option>
-            </select>
-          </div>
-          <div class="list" id="list"></div>
-          <div class="empty" id="empty" style="display:none">ยังไม่มีงาน — เพิ่มงานฝั่งซ้ายก่อนนะ</div>
-        </div>
-      </section>
-
+    <!-- วิธีการใช้งาน -->
+    <div class="steps">
+      <h3>📌 วิธีการใช้งาน</h3>
+      <p>1. สั่งซื้อสินค้า และคัดลอกโค้ดจากประวัติการสั่งซื้อ</p>
+      <p>2. กรอก UID + ชื่อในเกม + โค้ดสินค้า และเลือกรูป (ถ้ามี)</p>
+      <p>3. กดยืนยัน → แคปหน้าจอคูปองเก็บไว้</p>
     </div>
 
-    <div class="footer">ตัวช่วยบันทึกการบ้าน </div>
-  </main>
+    <!-- ปุ่มเข้าเว็บ -->
+    <a href="https://riszy.shop" class="link-btn">🌐 เข้าเว็บ Riszy Shop</a>
+  </div>
 
-  <audio id="ding" preload="auto">
-    <source src="data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAAACAAAC4AAAACAAACcQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mp3">
-  </audio>
+  <div class="coupon" id="couponSection">
+    <h3>🎟️ คูปองของคุณ</h3>
+    <p><strong>UID:</strong> <span id="showUid"></span></p>
+    <p><strong>ชื่อในเกม:</strong> <span id="showName"></span></p>
+    <p><strong>โค้ดสินค้า:</strong> <span id="showCode"></span></p>
+    <img id="showImage" alt="" style="display:none;">
+    <p>📸 กรุณาแคปหน้านี้เก็บไว้เป็นหลักฐาน</p>
+  </div>
 
   <script>
-  ;(()=>{
-    const $ = (q,root=document)=>root.querySelector(q);
-    const $$ = (q,root=document)=>[...root.querySelectorAll(q)];
+    function showCoupon() {
+      const uid = document.getElementById("uid").value;
+      const name = document.getElementById("name").value;
+      const code = document.getElementById("code").value;
+      const imageInput = document.getElementById("image");
+      const imageFile = imageInput.files[0];
 
-    /*** STATE ***/
-    const LS_KEY = 'homework.v1';
-    let items = load();
-    let timeouts = new Map();
-    let leadMinutes = 30; // แจ้งเตือนล่วงหน้า (นาที)
-
-    function load(){
-      try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ return [] }
-    }
-    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(items)); }
-
-    /*** UTIL ***/
-    const fmt = new Intl.DateTimeFormat('th-TH',{dateStyle:'medium', timeStyle:'short'});
-    const fmtDate = new Intl.DateTimeFormat('th-TH',{dateStyle:'medium'});
-    function now(){ return Date.now(); }
-    function isLate(it){ return !it.done && new Date(it.due).getTime() < now(); }
-    function timeLeft(ms){
-      const s = Math.max(0, Math.floor(ms/1000));
-      const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60);
-      if(d>0) return `${d} วัน ${h} ชม.`; if(h>0) return `${h} ชม. ${m} นาที`; return `${m} นาที`;
-    }
-
-    /*** SUBJECT input toggle ***/
-    const subjectSel = $('#subject');
-    const subjectCustom = $('#subjectCustom');
-    subjectSel.addEventListener('change',()=>{
-      const custom = subjectSel.value.includes('อื่น');
-      subjectCustom.style.display = custom ? 'block' : 'none';
-      if(custom) subjectCustom.focus();
-    });
-
-    /*** FORM submit ***/
-    $('#hwForm').addEventListener('submit', e=>{
-      e.preventDefault();
-      const subject = subjectSel.value.includes('อื่น') ? subjectCustom.value.trim() : subjectSel.value;
-      if(!subject){ alert('กรุณาใส่ชื่อวิชา'); return; }
-      const assigned = $('#assigned').value;
-      const due = $('#due').value;
-      if(!assigned || !due){ alert('กรุณาใส่วันที่สั่งและวันเวลาส่ง'); return; }
-      const detail = $('#detail').value.trim();
-
-      const it = { id: crypto.randomUUID(), subject, assigned, due, detail, done:false, createdAt: now() };
-      items.unshift(it); save();
-      $('#hwForm').reset(); subjectCustom.style.display='none';
-      render(); scheduleOne(it);
-    });
-
-    $('#resetBtn').addEventListener('click',()=>{ subjectCustom.style.display='none'; });
-
-    /*** RENDER ***/
-    const list = $('#list'); const empty = $('#empty');
-    const q = $('#q'); const statusFilter = $('#statusFilter');
-    q.addEventListener('input', render); statusFilter.addEventListener('change', render);
-
-    function render(){
-      list.innerHTML='';
-      const term = q.value.toLowerCase();
-      const filtered = items.filter(it=>{
-        const match = (it.subject+" "+it.detail).toLowerCase().includes(term);
-        const late = isLate(it);
-        if(statusFilter.value==='todo') return match && !it.done && !late;
-        if(statusFilter.value==='done') return match && it.done;
-        if(statusFilter.value==='late') return match && late;
-        return match;
-      });
-
-      if(filtered.length===0){ empty.style.display='block'; return } else empty.style.display='none';
-
-      for(const it of filtered){
-        const dueTs = new Date(it.due).getTime();
-        const late = isLate(it);
-        const wrap = document.createElement('div'); wrap.className='item';
-        const left = document.createElement('div');
-        const right = document.createElement('div'); right.style.display='flex'; right.style.gap='6px';
-
-        left.innerHTML = `
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap">
-            <strong style="font-size:16px">${escapeHtml(it.subject)}</strong>
-            ${badge(it)}
-          </div>
-          <div class="meta">
-            <span>สั่ง: ${fmtDate.format(new Date(it.assigned))}</span>
-            <span>ส่ง: ${fmt.format(new Date(it.due))}</span>
-            ${!it.done ? `<span>เหลือเวลา: ${late?'<b style="color:#b91c1c">เลยกำหนด</b>': timeLeft(dueTs-now())}</span>`:''}
-          </div>
-          ${it.detail?`<div style="margin-top:6px">${escapeHtml(it.detail)}</div>`:''}
-        `;
-
-        const btnDone = button(it.done? 'ย้อนเป็นยังไม่ทำ' : 'ทำเสร็จแล้ว', it.done? 'warn' : 'ok', ()=>{
-          it.done = !it.done; save(); render();
-        });
-        const btnBell = button('เตือนล่วงหน้า', 'ghost', ()=>{
-          const m = prompt('ต้องการเตือนล่วงหน้ากี่นาที?', String(leadMinutes));
-          if(m===null) return; const n = parseInt(m,10); if(Number.isNaN(n) || n<0){ alert('ใส่ตัวเลขนาทีให้ถูกต้อง'); return; }
-          leadMinutes = n; scheduleOne(it,true);
-        });
-        const btnEdit = button('แก้ไข','secondary',()=> editItem(it));
-        const btnDel  = button('ลบ','danger',()=>{ if(confirm('ลบงานนี้?')){ cancelSchedule(it.id); items=items.filter(x=>x.id!==it.id); save(); render(); } });
-
-        right.append(btnDone, btnBell, btnEdit, btnDel);
-        wrap.append(left, right); list.append(wrap);
+      if (uid.trim() === "" || code.trim() === "") {
+        alert("กรุณากรอก UID และโค้ดสินค้าให้ครบถ้วน");
+        return;
       }
-    }
 
-    function badge(it){
-      if(it.done) return `<span class="badge ok">✔️ ทำเสร็จแล้ว</span>`;
-      if(isLate(it)) return `<span class="badge late">⏰ เลยกำหนด</span>`;
-      return `<span class="badge due">📝 ยังไม่ทำ</span>`;
-    }
+      document.getElementById("formSection").style.display = "none";
+      document.getElementById("showUid").innerText = uid;
+      document.getElementById("showName").innerText = name ? name : "-";
+      document.getElementById("showCode").innerText = code;
 
-    function button(text, kind, onClick){
-      const b = document.createElement('button'); b.className = `btn ${kind}`; b.type='button'; b.textContent=text; b.addEventListener('click', onClick); return b;
-    }
-
-    function editItem(it){
-      const subject = prompt('แก้ไขวิชา', it.subject); if(subject===null) return;
-      const assigned = prompt('แก้ไขวันที่สั่ง (YYYY-MM-DD)', it.assigned); if(assigned===null) return;
-      const due = prompt('แก้ไขวันเวลาส่ง (YYYY-MM-DDTHH:MM)', it.due.slice(0,16)); if(due===null) return;
-      const detail = prompt('แก้ไขรายละเอียด', it.detail||''); if(detail===null) return;
-      Object.assign(it,{subject,assigned,due,detail}); save(); render(); scheduleOne(it);
-    }
-
-    function escapeHtml(s){ return s.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
-
-    /*** NOTIFICATION + SOUND ***/
-    const permBtn = $('#permBtn');
-    const testNoti = $('#testNoti');
-    const testSound = $('#testSound');
-    const ding = $('#ding');
-
-    permBtn.addEventListener('click', askPermission);
-    testNoti.addEventListener('click', ()=> notify('ทดสอบแจ้งเตือน', 'การแจ้งเตือนทำงานแล้ว 🎉'));
-    testSound.addEventListener('click', ()=> playDing());
-
-    async function askPermission(){
-      try{
-        if('Notification' in window){
-          const res = await Notification.requestPermission();
-          alert('สถานะสิทธิแจ้งเตือน: '+res);
-        }else{
-          alert('เบราว์เซอร์ไม่รองรับ Notification API');
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById("showImage");
+          img.src = e.target.result;
+          img.style.display = "block";
         }
-      }catch(e){ console.error(e); alert('ขอสิทธิไม่สำเร็จ'); }
+        reader.readAsDataURL(imageFile);
+      }
+
+      document.getElementById("couponSection").style.display = "block";
     }
-
-    async function notify(title, body){
-      try{
-        if(!('Notification' in window)) return;
-        if(Notification.permission==='granted'){
-          if(navigator.serviceWorker?.controller){
-            const reg = await navigator.serviceWorker.getRegistration();
-            if(reg) { reg.showNotification(title,{ body, icon: undefined, badge: undefined }); }
-            else new Notification(title,{ body });
-          }else{
-            new Notification(title,{ body });
-          }
-        }
-      }catch(e){ console.warn('notify error', e); }
-    }
-
-    function playDing(){ try{ ding.currentTime=0; ding.play(); if(navigator.vibrate) navigator.vibrate([100,50,100]); }catch{} }
-
-    /*** SCHEDULE ***/
-    function scheduleAll(){
-      // clear
-      for(const id of timeouts.keys()) cancelSchedule(id);
-      for(const it of items) scheduleOne(it);
-    }
-
-    function scheduleOne(it, showToast=false){
-      cancelSchedule(it.id);
-      if(it.done) return;
-      const due = new Date(it.due).getTime();
-      const when = due - leadMinutes*60*1000;
-      const delay = when - now();
-      if(delay <= 0){ return; }
-      const tid = setTimeout(()=>{
-        notify(`การบ้าน ${it.subject}`, `ใกล้ถึงเวลาส่งใน ${leadMinutes} นาที`);
-        playDing();
-      }, Math.min(delay, 2**31-1));
-      timeouts.set(it.id, tid);
-      if(showToast) alert(`ตั้งแจ้งเตือนล่วงหน้า ${leadMinutes} นาที สำหรับวิชา ${it.subject}`);
-    }
-
-    function cancelSchedule(id){ const t = timeouts.get(id); if(t){ clearTimeout(t); timeouts.delete(id); } }
-
-    /*** SERVICE WORKER (inline) ***/
-    if('serviceWorker' in navigator){
-      const code = `self.addEventListener('install',e=>self.skipWaiting()); self.addEventListener('activate',e=>self.clients.claim());`;
-      const blob = new Blob([code],{type:'text/javascript'});
-      const url = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(url).catch(()=>{});
-    }
-
-    // init
-    render(); scheduleAll();
-
-    // live countdown refresh (ทุก 30 วินาที)
-    setInterval(()=>{ if(document.hidden) return; render(); }, 30000);
-  })();
   </script>
 </body>
 </html>
