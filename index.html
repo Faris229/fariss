@@ -1,222 +1,286 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>รับโค้ดสินค้า</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f6fff6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>รับโค้ดสินค้า</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Kanit', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #d0f0c0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
 
-    header {
-      text-align: center;
-      padding: 25px 15px 15px;
-    }
+header {
+  text-align: center;
+  padding: 30px 15px 15px;
+}
 
-    header img {
-      max-width: 100px;
-      display: block;
-      margin: 0 auto 10px auto;
-    }
+header img {
+  max-width: 150px; /* โลโก้ใหญ่ขึ้น */
+  display: block;
+  margin: 0 auto 10px auto;
+  transition: transform 0.3s;
+}
+header img:hover {
+  transform: scale(1.1);
+}
 
-    header h1 {
-      font-size: 22px;
-      color: #1b8d3f;
-      margin: 0;
-    }
+header h1 {
+  font-size: 26px;
+  color: #fff;
+  margin: 0;
+  font-weight: 600;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
 
-    .container {
-      width: 90%;
-      max-width: 430px;
-      background: white;
-      padding: 20px;
-      margin-top: 10px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+.container, .coupon, .loader-box {
+  width: 95%;
+  max-width: 450px;
+  background: rgba(255,255,255,0.95);
+  padding: 30px;
+  margin-top: 20px;
+  border-radius: 22px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+}
 
-    h2 {
-      color: #1b8d3f;
-      margin-bottom: 15px;
-    }
+h2 {
+  color: #1b8d3f;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 600;
+}
 
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
+}
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-    }
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
 
-    input[type="file"] {
-      border: none;
-      margin-bottom: 15px;
-    }
+input:focus {
+  border-color: #27ae60;
+  box-shadow: 0 0 10px rgba(39,174,96,0.4);
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #1b8d3f;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+input[type="file"] {
+  border: none;
+  margin-bottom: 20px;
+}
 
-    button:hover {
-      background: #157533;
-    }
+button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #3cb371, #27ae60);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-    .coupon {
-      display: none;
-      width: 90%;
-      max-width: 430px;
-      margin-top: 20px;
-      padding: 22px;
-      background: white;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
 
-    .coupon h3 {
-      color: #1b8d3f;
-      margin-bottom: 15px;
-    }
+.coupon {
+  display: none;
+}
 
-    .coupon p {
-      font-size: 18px;
-      margin: 8px 0;
-    }
+.coupon h3 {
+  color: #1b8d3f;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
 
-    .coupon img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
+.coupon p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #222;
+}
 
-    .link-btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: #1b8d3f;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      margin-top: 20px;
-      font-size: 18px;
-    }
+.coupon img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 12px;
+}
 
-    .link-btn:hover {
-      background: #157533;
-    }
+.steps {
+  margin-top: 18px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
 
-    .steps {
-      margin-top: 20px;
-      text-align: left;
-      font-size: 15px;
-      color: #333;
-    }
+.steps h3 {
+  color: #1b8d3f;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
 
-    .steps h3 {
-      color: #1b8d3f;
-      margin-bottom: 8px;
-    }
+.steps p {
+  margin: 6px 0;
+}
 
-    .steps p {
-      margin: 6px 0;
-    }
-  </style>
+/* Loader */
+.loader-box {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 40px;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #27ae60;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+}
+
+.loader-text {
+  font-size: 20px;
+  color: #1b8d3f;
+  font-weight: 600;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+@media (max-width: 480px) {
+  .container, .coupon, .loader-box {
+    width: 95%;
+    padding: 25px;
+  }
+  input, button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+</style>
 </head>
 <body>
-  <header>
-    <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" alt="Logo">
-    <h1>รับสินค้า RISZY SHOP</h1>
-  </header>
+<header>
+  <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" alt="Logo">
+  <h1>รับสินค้า RISZY SHOP</h1>
+</header>
 
-  <div class="container" id="formSection">
-    <h2>กรอกข้อมูล</h2>
+<div class="container" id="formSection">
+  <h2>กรอกข้อมูล</h2>
 
-    <label for="webname">ชื่อในเว็บ</label>
-    <input type="text" id="webname" placeholder="ใส่ชื่อในเว็บ">
+  <label for="webname">ชื่อในเว็บ</label>
+  <input type="text" id="webname" placeholder="ใส่ชื่อในเว็บ">
 
-    <label for="name">ชื่อในเกม</label>
-    <input type="text" id="name" placeholder="ใส่ชื่อในเกม">
+  <label for="name">ชื่อในเกม</label>
+  <input type="text" id="name" placeholder="ใส่ชื่อในเกม">
 
-    <label for="uid">UID</label>
-    <input type="text" id="uid" placeholder="ใส่ UID ของคุณ">
+  <label for="uid">UID</label>
+  <input type="text" id="uid" placeholder="ใส่ UID ของคุณ">
 
-    <label for="code">โค้ดสินค้า</label>
-    <input type="text" id="code" placeholder="ใส่โค้ดสินค้า">
+  <label for="code">โค้ดสินค้า</label>
+  <input type="text" id="code" placeholder="ใส่โค้ดสินค้า">
 
-    <label for="image">เลือกรูปโปรไฟล์ในเกม (ถ้ามี)</label>
-    <input type="file" id="image" accept="image/*">
+  <label for="image">เลือกรูปโปรไฟล์ในเกม (ถ้ามี)</label>
+  <input type="file" id="image" accept="image/*">
 
-    <button onclick="showCoupon()">ยืนยัน</button>
+  <button onclick="startLoader()">ยืนยัน</button>
 
-    <div class="steps">
-      <h3>📌 วิธีการใช้งาน</h3>
-      <p>1. สั่งซื้อสินค้า และคัดลอกโค้ดจากประวัติการสั่งซื้อ</p>
-      <p>2. กรอกชื่อในเว็บ + ชื่อในเกม + UID + โค้ดสินค้า และเลือกรูป (ถ้ามี)</p>
-      <p>3. กดยืนยัน → แคปหน้าจอคูปองเก็บไว้</p>
-    </div>
-
-    <a href="https://riszy.shop" class="link-btn">🌐 เข้าเว็บ Riszy Shop</a>
+  <div class="steps">
+    <h3>📌 วิธีการใช้งาน</h3>
+    <p>1. สั่งซื้อสินค้า และคัดลอกโค้ดจากประวัติการสั่งซื้อ</p>
+    <p>2. กรอกชื่อในเว็บ + ชื่อในเกม + UID + โค้ดสินค้า และเลือกรูป (ถ้ามี)</p>
+    <p>3. กดยืนยัน → แคปหน้าจอคูปองเก็บไว้</p>
   </div>
 
-  <div class="coupon" id="couponSection">
-    <h3>🎟️ คูปองของคุณ</h3>
-    <p><strong>ชื่อในเว็บ:</strong> <span id="showWebName"></span></p>
-    <p><strong>ชื่อในเกม:</strong> <span id="showName"></span></p>
-    <p><strong>UID:</strong> <span id="showUid"></span></p>
-    <p><strong>โค้ดสินค้า:</strong> <span id="showCode"></span></p>
-    <img id="showImage" alt="" style="display:none;">
-    <p>📸 กรุณาแคปหน้านี้เก็บไว้เป็นหลักฐาน</p>
-    <p>ส่งให้เเอดมิน เเละรอเเอดมินดำเนินการ</p>
-  </div>
+  <button class="bottom-btn" onclick="window.location.href='https://riszy.shop/?page=history'" style="margin-top:20px;">
+    <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" alt="icon" style="width:28px;"> ดูประวัติการสั่งซื้อของคุณ
+  </button>
+</div>
 
-  <script>
-    function showCoupon() {
-      const webname = document.getElementById("webname").value || "-";
-      const name = document.getElementById("name").value || "-";
-      const uid = document.getElementById("uid").value || "-";
-      const code = document.getElementById("code").value || "-";
-      const imageInput = document.getElementById("image");
-      const imageFile = imageInput.files[0];
+<!-- Loader -->
+<div class="loader-box" id="loaderBox">
+  <div class="spinner"></div>
+  <div class="loader-text" id="loaderText">กำลังสร้างคูปองของคุณ... 20</div>
+</div>
 
-      if (uid === "-" || code === "-") {
-        alert("กรุณากรอก UID และโค้ดสินค้าให้ครบถ้วน");
-        return;
-      }
+<div class="coupon" id="couponSection">
+  <h3>🎟️ คูปองของคุณ</h3>
+  <p><strong>ชื่อในเว็บ:</strong> <span id="showWebName"></span></p>
+  <p><strong>ชื่อในเกม:</strong> <span id="showName"></span></p>
+  <p><strong>UID:</strong> <span id="showUid"></span></p>
+  <p><strong>โค้ดสินค้า:</strong> <span id="showCode"></span></p>
+  <img id="showImage" alt="" style="display:none;">
+  <p>📸 กรุณาแคปหน้านี้เก็บไว้เป็นหลักฐาน</p>
+  <p>ส่งให้เเอดมิน และรอเเอดมินดำเนินการ</p>
+</div>
 
-      document.getElementById("formSection").style.display = "none";
+<script>
+function startLoader() {
+  const webname = document.getElementById("webname").value || "-";
+  const name = document.getElementById("name").value || "-";
+  const uid = document.getElementById("uid").value || "-";
+  const code = document.getElementById("code").value || "-";
+  const imageInput = document.getElementById("image");
+  const imageFile = imageInput.files[0];
+
+  if(uid === "-" || code === "-") {
+    alert("กรุณากรอก UID และโค้ดสินค้าให้ครบถ้วน");
+    return;
+  }
+
+  document.getElementById("formSection").style.display = "none";
+  const loaderBox = document.getElementById("loaderBox");
+  loaderBox.style.display = "flex";
+
+  let timeLeft = 20;
+  const loaderText = document.getElementById("loaderText");
+  loaderText.innerText = `กำลังสร้างคูปองของคุณ... ${timeLeft}`;
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    loaderText.innerText = `กำลังสร้างคูปองของคุณ... ${timeLeft}`;
+    if(timeLeft <= 0) {
+      clearInterval(timer);
+      loaderBox.style.display = "none";
+
       document.getElementById("showWebName").innerText = webname;
       document.getElementById("showName").innerText = name;
       document.getElementById("showUid").innerText = uid;
       document.getElementById("showCode").innerText = code;
 
-      if (imageFile) {
+      if(imageFile) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function(e){
           const img = document.getElementById("showImage");
           img.src = e.target.result;
           img.style.display = "block";
@@ -226,6 +290,8 @@
 
       document.getElementById("couponSection").style.display = "block";
     }
-  </script>
+  }, 1000);
+}
+</script>
 </body>
 </html>
