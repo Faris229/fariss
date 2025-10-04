@@ -16,177 +16,43 @@ body {
   align-items: center;
   min-height: 100vh;
 }
-
-header {
-  text-align: center;
-  padding: 30px 15px 15px;
-}
-
-header img {
-  max-width: 150px; /* โลโก้ใหญ่ขึ้น */
-  display: block;
-  margin: 0 auto 10px auto;
-  transition: transform 0.3s;
-}
-header img:hover {
-  transform: scale(1.1);
-}
-
-header h1 {
-  font-size: 26px;
-  color: #fff;
-  margin: 0;
-  font-weight: 600;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
+header { text-align: center; padding: 30px 15px 15px; }
+header img { max-width: 150px; display: block; margin: 0 auto 10px auto; transition: transform 0.3s; }
+header img:hover { transform: scale(1.1); }
+header h1 { font-size: 26px; color: #fff; margin:0; font-weight:600; text-shadow:0 2px 6px rgba(0,0,0,0.4); }
 
 .container, .coupon, .loader-box {
-  width: 95%;
-  max-width: 450px;
-  background: rgba(255,255,255,0.95);
-  padding: 30px;
-  margin-top: 20px;
-  border-radius: 22px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  text-align: center;
-  position: relative;
+  width: 95%; max-width: 450px; background: rgba(255,255,255,0.95); padding: 30px;
+  margin-top: 20px; border-radius: 22px; box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  text-align: center; position: relative;
 }
+h2 { color: #1b8d3f; margin-bottom: 18px; font-size:20px; font-weight:600; }
+label { display:block; text-align:left; margin-bottom:6px; font-weight:500; font-size:15px; color:#333; }
+input { width:100%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:12px; font-size:15px; outline:none; transition:border 0.2s, box-shadow 0.2s; }
+input:focus { border-color:#27ae60; box-shadow:0 0 10px rgba(39,174,96,0.4); }
+input[type="file"] { border:none; margin-bottom:20px; }
+button { width:100%; padding:15px; background: linear-gradient(135deg,#3cb371,#27ae60); color:white; border:none; border-radius:14px; font-size:17px; cursor:pointer; font-weight:600; transition:transform 0.2s, box-shadow 0.2s; }
+button:hover { transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.25); }
 
-h2 {
-  color: #1b8d3f;
-  margin-bottom: 18px;
-  font-size: 20px;
-  font-weight: 600;
-}
+.coupon { display:none; }
+.coupon h3 { color:#1b8d3f; margin-bottom:15px; font-size:20px; }
+.coupon p { font-size:16px; margin:8px 0; color:#222; }
+.coupon img { max-width:100%; border-radius:10px; margin-top:12px; }
 
-label {
-  display: block;
-  text-align: left;
-  margin-bottom: 6px;
-  font-weight: 500;
-  font-size: 15px;
-  color: #333;
-}
+.steps { margin-top:18px; text-align:left; font-size:14px; color:#333; }
+.steps h3 { color:#1b8d3f; margin-bottom:8px; font-size:16px; }
+.steps p { margin:6px 0; }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 15px;
-  outline: none;
-  transition: border 0.2s, box-shadow 0.2s;
-}
+.loader-box { display:none; flex-direction:column; justify-content:center; align-items:center; gap:15px; padding:40px; }
+.spinner { border:8px solid #f3f3f3; border-top:8px solid #27ae60; border-radius:50%; width:80px; height:80px; animation:spin 1s linear infinite; }
+.loader-text { font-size:20px; color:#1b8d3f; font-weight:600; text-align:center; }
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
-input:focus {
-  border-color: #27ae60;
-  box-shadow: 0 0 10px rgba(39,174,96,0.4);
-}
+#modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:999; }
+#modalContent { background:#fff; padding:20px; border-radius:15px; text-align:center; max-width:300px; }
+#modalContent button { margin-top:10px; }
 
-input[type="file"] {
-  border: none;
-  margin-bottom: 20px;
-}
-
-button {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(135deg, #3cb371, #27ae60);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 17px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-}
-
-.coupon {
-  display: none;
-}
-
-.coupon h3 {
-  color: #1b8d3f;
-  margin-bottom: 15px;
-  font-size: 20px;
-}
-
-.coupon p {
-  font-size: 16px;
-  margin: 8px 0;
-  color: #222;
-}
-
-.coupon img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-top: 12px;
-}
-
-.steps {
-  margin-top: 18px;
-  text-align: left;
-  font-size: 14px;
-  color: #333;
-}
-
-.steps h3 {
-  color: #1b8d3f;
-  margin-bottom: 8px;
-  font-size: 16px;
-}
-
-.steps p {
-  margin: 6px 0;
-}
-
-/* Loader */
-.loader-box {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  padding: 40px;
-}
-
-.spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #27ae60;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  animation: spin 1s linear infinite;
-}
-
-.loader-text {
-  font-size: 20px;
-  color: #1b8d3f;
-  font-weight: 600;
-  text-align: center;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
-}
-
-@media (max-width: 480px) {
-  .container, .coupon, .loader-box {
-    width: 95%;
-    padding: 25px;
-  }
-  input, button {
-    font-size: 15px;
-    padding: 12px;
-  }
-}
+@media(max-width:480px){ .container,.coupon,.loader-box{ width:95%; padding:25px;} input,button{ font-size:15px; padding:12px; } }
 </style>
 </head>
 <body>
@@ -204,10 +70,10 @@ button:hover {
   <label for="name">ชื่อในเกม</label>
   <input type="text" id="name" placeholder="ใส่ชื่อในเกม">
 
-  <label for="uid">UID</label>
+  <label for="uid">UID </label>
   <input type="text" id="uid" placeholder="ใส่ UID ของคุณ">
 
-  <label for="code">โค้ดสินค้า</label>
+  <label for="code">โค้ดสินค้า (กดดูได้ที่ประวัติการสั่งซื้อด้านล่าง)</label>
   <input type="text" id="code" placeholder="ใส่โค้ดสินค้า">
 
   <label for="image">เลือกรูปโปรไฟล์ในเกม (ถ้ามี)</label>
@@ -222,15 +88,15 @@ button:hover {
     <p>3. กดยืนยัน → แคปหน้าจอคูปองเก็บไว้</p>
   </div>
 
-  <button class="bottom-btn" onclick="window.location.href='https://riszy.shop/?page=history'" style="margin-top:20px;">
-    <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" alt="icon" style="width:28px;"> ดูประวัติการสั่งซื้อของคุณ
+  <button onclick="window.location.href='https://riszy.shop/?page=history'" style="margin-top:10px;">
+    ดูประวัติการสั่งซื้อ
   </button>
 </div>
 
 <!-- Loader -->
 <div class="loader-box" id="loaderBox">
   <div class="spinner"></div>
-  <div class="loader-text" id="loaderText">กำลังสร้างคูปองของคุณ... 20</div>
+  <div class="loader-text" id="loaderText">กำลังสร้างคูปองของคุณ... 0%</div>
 </div>
 
 <div class="coupon" id="couponSection">
@@ -239,22 +105,56 @@ button:hover {
   <p><strong>ชื่อในเกม:</strong> <span id="showName"></span></p>
   <p><strong>UID:</strong> <span id="showUid"></span></p>
   <p><strong>โค้ดสินค้า:</strong> <span id="showCode"></span></p>
+  <p><strong>วันที่ออกคูปอง:</strong> <span id="couponDate"></span></p>
   <img id="showImage" alt="" style="display:none;">
+  <button onclick="copyAll()">📋 คัดลอกข้อมูลทั้งหมด</button>
   <p>📸 กรุณาแคปหน้านี้เก็บไว้เป็นหลักฐาน</p>
   <p>ส่งให้เเอดมิน และรอเเอดมินดำเนินการ</p>
 </div>
 
+<!-- Modal -->
+<div id="modal">
+  <div id="modalContent">
+    <p id="modalText"></p>
+    <button onclick="closeModal()">ปิด</button>
+  </div>
+</div>
+
 <script>
+function showModal(msg){
+  document.getElementById("modalText").innerText = msg;
+  document.getElementById("modal").style.display = "flex";
+}
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+function copyAll() {
+  const webname = document.getElementById("showWebName").innerText;
+  const name = document.getElementById("showName").innerText;
+  const uid = document.getElementById("showUid").innerText;
+  const code = document.getElementById("showCode").innerText;
+  const date = document.getElementById("couponDate").innerText;
+  const allText = `ชื่อในเว็บ: ${webname}\nชื่อในเกม: ${name}\nUID: ${uid}\nโค้ดสินค้า: ${code}\nวันที่ออกคูปอง: ${date}`;
+  navigator.clipboard.writeText(allText).then(() => {
+    showModal("✅ ข้อมูลทั้งหมดถูกคัดลอกไป clipboard แล้ว!");
+  });
+}
+
 function startLoader() {
   const webname = document.getElementById("webname").value || "-";
   const name = document.getElementById("name").value || "-";
-  const uid = document.getElementById("uid").value || "-";
-  const code = document.getElementById("code").value || "-";
+  const uid = document.getElementById("uid").value;
+  const code = document.getElementById("code").value;
   const imageInput = document.getElementById("image");
   const imageFile = imageInput.files[0];
 
-  if(uid === "-" || code === "-") {
-    alert("กรุณากรอก UID และโค้ดสินค้าให้ครบถ้วน");
+  if(!/^\d{8,}$/.test(uid)){
+    showModal("❌ UID ต้องเป็นตัวเลข 8 หลักขึ้นไป!");
+    return;
+  }
+  if(!/^RSDM\d+$/.test(code)){
+    showModal("❌ โค้ดไม่ถูกต้อง! กรุณาตรวจสอบโค้ดสินค้าอีกครั้ง");
     return;
   }
 
@@ -262,14 +162,13 @@ function startLoader() {
   const loaderBox = document.getElementById("loaderBox");
   loaderBox.style.display = "flex";
 
-  let timeLeft = 20;
+  let percent = 0;
   const loaderText = document.getElementById("loaderText");
-  loaderText.innerText = `กำลังสร้างคูปองของคุณ... ${timeLeft}`;
 
   const timer = setInterval(() => {
-    timeLeft--;
-    loaderText.innerText = `กำลังสร้างคูปองของคุณ... ${timeLeft}`;
-    if(timeLeft <= 0) {
+    percent++;
+    loaderText.innerText = `กำลังสร้างคูปองของคุณ... ${percent}%`;
+    if(percent >= 100){
       clearInterval(timer);
       loaderBox.style.display = "none";
 
@@ -277,8 +176,9 @@ function startLoader() {
       document.getElementById("showName").innerText = name;
       document.getElementById("showUid").innerText = uid;
       document.getElementById("showCode").innerText = code;
+      document.getElementById("couponDate").innerText = new Date().toLocaleString("th-TH");
 
-      if(imageFile) {
+      if(imageFile){
         const reader = new FileReader();
         reader.onload = function(e){
           const img = document.getElementById("showImage");
@@ -290,7 +190,7 @@ function startLoader() {
 
       document.getElementById("couponSection").style.display = "block";
     }
-  }, 1000);
+  }, 30);
 }
 </script>
 </body>
