@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riszy Shop รับสินค้า </title>
+<title>Riszy Shop รับสินค้า</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 body {
     margin:0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(to bottom, #d9f2d9, #b3e6b3);
-    color: #004d00;
+    color: #003300;
+    line-height:1.6;
 }
 .container {
     max-width: 650px;
@@ -22,31 +24,43 @@ body {
     text-align: center;
 }
 .logo { width: 120px; margin-bottom: 15px; }
-h1 { margin:10px 0 20px; font-weight:700; color:#004d00; font-size:26px; }
+h1 { margin:10px 0 20px; font-weight:800; color:#006600; font-size:28px; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
 
 .instructions {
-    font-size:15px;
-    background: #f0fff0;
-    padding: 15px 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+    font-size:16px;
+    background: linear-gradient(to bottom, #f0fff0, #e6ffe6);
+    padding: 18px 22px;
+    border-radius: 18px;
+    margin-bottom: 25px;
     color: #004d00;
     text-align:left;
-    line-height:1.6;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    line-height:1.8;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-label { display:block; margin:15px 0 5px; font-weight:600; text-align:left; font-size:15px; }
+label { display:block; margin:15px 0 5px; font-weight:700; text-align:left; font-size:16px; color:#005500; }
 input, button { 
     width:100%; padding:14px; border-radius:15px; border:1px solid #b3ffb3; font-size:16px; box-sizing:border-box; margin-bottom:15px;
 }
 input:focus { outline:none; border-color:#00b300; box-shadow:0 0 12px #00b300; }
 
 button {
-    background:#00b300; color:#fff; cursor:pointer; font-weight:600; border:none; transition:0.3s;
+    background: linear-gradient(135deg, #00b300, #33cc33);
+    color:#fff;
+    cursor:pointer;
+    font-weight:700;
+    border:none;
+    border-radius:20px;
     font-size:16px;
+    padding:14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
-button:hover { background:#33cc33; }
+button:hover {
+    background: linear-gradient(135deg, #33cc33, #00ff00);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 
 .product-options {
     display: grid;
@@ -81,9 +95,11 @@ button:hover { background:#33cc33; }
     background: #d9ffd9;
 }
 .product-label {
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 5px;
+    font-weight:700;
+    font-size:16px;
+    margin-top:5px;
+    color:#006600;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.1);
 }
 
 #loaderContainer { display:none; text-align:center; margin-top:15px;}
@@ -100,46 +116,150 @@ button:hover { background:#33cc33; }
     text-align:center;
     font-size:16px;
 }
+#result h2 {
+    color:#007700;
+    font-size:22px;
+    font-weight:800;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+#result p {
+    color:#004d00;
+    font-weight:600;
+    font-size:16px;
+}
 
 .copyBtn {
     margin-top:10px;
     width:70%;
     display:inline-block;
     border-radius:20px;
-    font-weight:600;
+    font-weight:700;
     text-align:center;
     line-height:45px;
-    background:#009900; color:#fff; cursor:pointer;
+    background: linear-gradient(135deg, #009900, #33cc33);
+    color:#fff;
+    cursor:pointer;
     border:none;
     font-size:16px;
-    transition:0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
 }
-.copyBtn:hover { background:#00cc00; }
+.copyBtn:hover { 
+    background: linear-gradient(135deg, #00cc00, #00ff00);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 
-.errorPopup, .copyPopup {
+/* Popup กลางจอ พร้อมเอฟเฟกต์ไอคอน */
+.popup {
     display: none;
     position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
     width: 90%;
-    max-width: 400px;
-    padding: 25px 30px;
+    max-width: 380px;
+    background: #fff;
     border-radius: 20px;
+    padding: 25px 20px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    z-index: 10000;
     font-weight:600;
+    animation: popFadeIn 0.4s ease forwards;
 }
-.errorPopup { border-left:5px solid #ff4d4d; background:#ffeaea; }
-.copyPopup { border-left:5px solid #009900; background:#e6ffe6; }
+.popup-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    animation: iconBounce 0.6s ease;
+}
+.popup h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+.popup p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+}
+.popup button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    border:none;
+    border-radius:15px;
+    background: linear-gradient(135deg, #00b300, #33cc33);
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.popup button:hover {
+    background: linear-gradient(135deg, #33cc33, #00ff00);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Keyframes */
+@keyframes popFadeIn {
+    0% { opacity:0; transform: translate(-50%, -60%) scale(0.9);}
+    100% { opacity:1; transform: translate(-50%, -50%) scale(1);}
+}
+@keyframes iconBounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0);}
+    40% { transform: translateY(-10px) scale(1.1);}
+    60% { transform: translateY(-5px) scale(1.05);}
+}
+
+/* ปุ่มลอยติดต่แอดมิน */
+.contact-admin {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1877f2, #00a2ff);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 28px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    z-index: 9999;
+}
+.contact-admin:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+.contact-admin::after {
+    content: "ติดต่อแอดมิน";
+    position: absolute;
+    bottom: 70px;
+    right: 50%;
+    transform: translateX(50%);
+    background: #1877f2;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, bottom 0.3s;
+}
+.contact-admin:hover::after {
+    opacity: 1;
+    bottom: 80px;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
     <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" class="logo">
-  <h1>Riszy Shop รับสินค้า </h1>
+    <h1>Riszy Shop รับสินค้า</h1>
 
     <div class="instructions">
         <b>วิธีใช้งานเว็บ:</b><br>
@@ -155,7 +275,7 @@ button:hover { background:#33cc33; }
         <label for="username">ชื่อในเว็บ</label>
         <input type="text" id="username" placeholder="กรอกชื่อในเว็บ">
 
-      <label>เลือกหมวดสินค้า ที่ซื้อ</lable>
+        <label>เลือกหมวดสินค้า ที่ซื้อ</label>
         <div class="product-options" id="categoryOptions">
             <div class="product-box" data-category="gem">
                 <img src="https://i.postimg.cc/SRgj2qxv/image.png" alt="เพรช">
@@ -163,7 +283,7 @@ button:hover { background:#33cc33; }
             </div>
             <div class="product-box" data-category="fluorite">
                 <img src="https://i.postimg.cc/hvNydDnb/ffios.png" alt="Fluorite/GBOX">
-                <iv class="product-label">โปรเเกรมช่วยเล่น
+                <div class="product-label">โปรเเกรมช่วยเล่น</div>
             </div>
         </div>
 
@@ -183,12 +303,20 @@ button:hover { background:#33cc33; }
     <div id="result">
         <h2>เรียบร้อย!</h2>
         <button class="copyBtn" id="copyBtn">คัดลอกข้อมูลทั้งหมด</button>
-        <p style="margin-top:10px; color:#004d00; font-weight:bold;">กดคัดลอกแล้วส่งให้แอดมิน</p>
+        <p style="margin-top:10px; font-weight:bold;">กดคัดลอกแล้วส่งให้แอดมิน</p>
     </div>
 </div>
 
-<div class="errorPopup" id="errorPopup"></div>
-<div class="copyPopup" id="copyPopup">คัดลอกข้อมูลเรียบร้อย!</div>
+<!-- Popup กลางจอ พร้อมเอฟเฟกต์ไอคอน -->
+<div class="popup" id="popupBox">
+    <div class="popup-icon" id="popupIcon"><i class="fa-solid fa-info"></i></div>
+    <h3 id="popupTitle">ข้อความ</h3>
+    <p id="popupMsg">รายละเอียดข้อความ</p>
+    <button onclick="closePopup()">ปิด</button>
+</div>
+
+<!-- ปุ่มลอยติดต่แอดมิน -->
+<a href="https://www.facebook.com/p/Riszy-shop-61570552356915/" target="_blank" class="contact-admin"><i class="fab fa-facebook-f"></i></a>
 
 <script>
 let selectedCategory = null;
@@ -239,26 +367,28 @@ function renderProducts(category){
     });
 }
 
-const submitBtn = document.getElementById('submitBtn');
-const usernameInput = document.getElementById('username');
-const codeInput = document.getElementById('code');
-const formContainer = document.getElementById('formContainer');
-const loaderContainer = document.getElementById('loaderContainer');
-const loaderProgress = document.getElementById('loaderProgress');
-const loaderPercent = document.getElementById('loaderPercent');
-const resultDiv = document.getElementById('result');
-const copyBtn = document.getElementById('copyBtn');
-const errorPopup = document.getElementById('errorPopup');
-const copyPopup = document.getElementById('copyPopup');
+/* Popup Functions */
+function showPopup(title, msg, type='info'){
+    const popup = document.getElementById('popupBox');
+    const popupIcon = document.getElementById('popupIcon');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupMsg = document.getElementById('popupMsg');
 
-function showError(msg){
-    errorPopup.textContent = msg;
-    errorPopup.style.display='block';
-    setTimeout(()=>{ errorPopup.style.display='none'; },2500);
+    popupTitle.textContent = title;
+    popupMsg.textContent = msg;
+
+    if(type==='error'){
+        popupIcon.innerHTML = '<i class="fa-solid fa-xmark" style="color:#ff4d4d;"></i>';
+    } else if(type==='success'){
+        popupIcon.innerHTML = '<i class="fa-solid fa-check" style="color:#00b300;"></i>';
+    } else {
+        popupIcon.innerHTML = '<i class="fa-solid fa-info" style="color:#009900;"></i>';
+    }
+
+    popup.style.display = 'block';
 }
-function showCopyPopup(){
-    copyPopup.style.display='block';
-    setTimeout(()=>{ copyPopup.style.display='none'; },2000);
+function closePopup(){
+    document.getElementById('popupBox').style.display='none';
 }
 
 function validateCode(code){
@@ -277,11 +407,27 @@ function validateCode(code){
     return false;
 }
 
+const submitBtn = document.getElementById('submitBtn');
+const usernameInput = document.getElementById('username');
+const codeInput = document.getElementById('code');
+const formContainer = document.getElementById('formContainer');
+const loaderContainer = document.getElementById('loaderContainer');
+const loaderProgress = document.getElementById('loaderProgress');
+const loaderPercent = document.getElementById('loaderPercent');
+const resultDiv = document.getElementById('result');
+const copyBtn = document.getElementById('copyBtn');
+
 submitBtn.addEventListener('click',()=>{
     const username = usernameInput.value.trim();
     const code = codeInput.value.trim();
-    if(!username||!selectedCategory||!selectedProduct||!code){ showError('กรุณากรอกข้อมูลครบทุกช่อง'); return; }
-    if(!validateCode(code)){ showError('โค้ดไม่ถูกต้องตามรูปแบบ'); return; }
+    if(!username||!selectedCategory||!selectedProduct||!code){
+        showPopup('เกิดข้อผิดพลาด', 'กรุณากรอกข้อมูลครบทุกช่อง', 'error'); 
+        return; 
+    }
+    if(!validateCode(code)){
+        showPopup('เกิดข้อผิดพลาด', 'ไม่พบโค้ดที่กรอก', 'error'); 
+        return; 
+    }
 
     formContainer.style.display='none';
     loaderContainer.style.display='block';
@@ -307,14 +453,8 @@ function showResult(username, category, product, code){
 
 copyBtn.addEventListener('click',()=>{
     const text = copyBtn.dataset.text;
-    navigator.clipboard.writeText(text).then(showCopyPopup);
+    navigator.clipboard.writeText(text).then(()=>showPopup('สำเร็จ', 'คัดลอกข้อมูลเรียบร้อย', 'success'));
 });
 </script>
 </body>
-</html>
-  
-  
-  
-</body>
-
 </html>
