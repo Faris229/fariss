@@ -6,7 +6,10 @@
 <title>Riszy Shop รับสินค้า</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
+/* --- CSS เดิมทั้งหมด ไม่เปลี่ยน --- */
 body {
     margin:0;
     font-family: 'Poppins', sans-serif;
@@ -150,67 +153,6 @@ button:hover {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* Popup กลางจอ พร้อมเอฟเฟกต์ไอคอน */
-.popup {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 380px;
-    background: #fff;
-    border-radius: 20px;
-    padding: 25px 20px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    z-index: 10000;
-    font-weight:600;
-    animation: popFadeIn 0.4s ease forwards;
-}
-.popup-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-    animation: iconBounce 0.6s ease;
-}
-.popup h3 {
-    margin: 10px 0;
-    font-size: 18px;
-    color: #333;
-}
-.popup p {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.5;
-}
-.popup button {
-    margin-top: 15px;
-    padding: 12px 25px;
-    border:none;
-    border-radius:15px;
-    background: linear-gradient(135deg, #00b300, #33cc33);
-    color:#fff;
-    font-weight:700;
-    cursor:pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.popup button:hover {
-    background: linear-gradient(135deg, #33cc33, #00ff00);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* Keyframes */
-@keyframes popFadeIn {
-    0% { opacity:0; transform: translate(-50%, -60%) scale(0.9);}
-    100% { opacity:1; transform: translate(-50%, -50%) scale(1);}
-}
-@keyframes iconBounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0);}
-    40% { transform: translateY(-10px) scale(1.1);}
-    60% { transform: translateY(-5px) scale(1.05);}
-}
-
 /* ปุ่มลอยติดต่แอดมิน */
 .contact-admin {
     position: fixed;
@@ -307,14 +249,6 @@ button:hover {
     </div>
 </div>
 
-<!-- Popup กลางจอ พร้อมเอฟเฟกต์ไอคอน -->
-<div class="popup" id="popupBox">
-    <div class="popup-icon" id="popupIcon"><i class="fa-solid fa-info"></i></div>
-    <h3 id="popupTitle">ข้อความ</h3>
-    <p id="popupMsg">รายละเอียดข้อความ</p>
-    <button onclick="closePopup()">ปิด</button>
-</div>
-
 <!-- ปุ่มลอยติดต่แอดมิน -->
 <a href="https://www.facebook.com/p/Riszy-shop-61570552356915/" target="_blank" class="contact-admin"><i class="fab fa-facebook-f"></i></a>
 
@@ -367,30 +301,6 @@ function renderProducts(category){
     });
 }
 
-/* Popup Functions */
-function showPopup(title, msg, type='info'){
-    const popup = document.getElementById('popupBox');
-    const popupIcon = document.getElementById('popupIcon');
-    const popupTitle = document.getElementById('popupTitle');
-    const popupMsg = document.getElementById('popupMsg');
-
-    popupTitle.textContent = title;
-    popupMsg.textContent = msg;
-
-    if(type==='error'){
-        popupIcon.innerHTML = '<i class="fa-solid fa-xmark" style="color:#ff4d4d;"></i>';
-    } else if(type==='success'){
-        popupIcon.innerHTML = '<i class="fa-solid fa-check" style="color:#00b300;"></i>';
-    } else {
-        popupIcon.innerHTML = '<i class="fa-solid fa-info" style="color:#009900;"></i>';
-    }
-
-    popup.style.display = 'block';
-}
-function closePopup(){
-    document.getElementById('popupBox').style.display='none';
-}
-
 function validateCode(code){
     if(!selectedProduct) return false;
     if(selectedCategory=='gem'){
@@ -421,11 +331,19 @@ submitBtn.addEventListener('click',()=>{
     const username = usernameInput.value.trim();
     const code = codeInput.value.trim();
     if(!username||!selectedCategory||!selectedProduct||!code){
-        showPopup('เกิดข้อผิดพลาด', 'กรุณากรอกข้อมูลครบทุกช่อง', 'error'); 
+        Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'กรุณากรอกข้อมูลครบทุกช่อง'
+        });
         return; 
     }
     if(!validateCode(code)){
-        showPopup('เกิดข้อผิดพลาด', 'ไม่พบโค้ดที่กรอก', 'error'); 
+        Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่พบโค้ดที่กรอก'
+        });
         return; 
     }
 
@@ -453,7 +371,13 @@ function showResult(username, category, product, code){
 
 copyBtn.addEventListener('click',()=>{
     const text = copyBtn.dataset.text;
-    navigator.clipboard.writeText(text).then(()=>showPopup('สำเร็จ', 'คัดลอกข้อมูลเรียบร้อย', 'success'));
+    navigator.clipboard.writeText(text).then(()=>{
+        Swal.fire({
+            icon: 'success',
+            title: 'สำเร็จ',
+            text: 'คัดลอกข้อมูลเรียบร้อย'
+        });
+    });
 });
 </script>
 </body>
