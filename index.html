@@ -3,295 +3,386 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Riszy Shop รับสินค้า</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>RISZY RSDM</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Changed Font to Mitr for premium look -->
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome 6.5.2 (Icons) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary': '#005500',      // Deep Emerald Green
+                    'secondary': '#FFC72C',    // Premium Gold/Yellow (Accent)
+                    'light-bg': '#f3fff3',     // Very Light Green/Off-White
+                    'dark-text': '#1a4734',    // Dark forest green for text
+                    'brand-green': '#009933',
+                    'brand-dark': '#004d00',
+                    'gold-border': '#FFC72C',
+                },
+                fontFamily: {
+                    // Set Mitr as the primary font for the entire site
+                    sans: ['Mitr', 'sans-serif'], 
+                },
+            }
+        }
+    }
+</script>
 <style>
-/* --- CSS เดิมทั้งหมด ไม่เปลี่ยน --- */
-body {
-    margin:0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to bottom, #d9f2d9, #b3e6b3);
-    color: #003300;
-    line-height:1.6;
-}
-.container {
-    max-width: 650px;
-    margin: 30px auto;
-    background: #fff;
-    padding: 30px 25px;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    text-align: center;
-}
-.logo { width: 120px; margin-bottom: 15px; }
-h1 { margin:10px 0 20px; font-weight:800; color:#006600; font-size:28px; text-shadow:1px 1px 2px rgba(0,0,0,0.2); }
+    body {
+        font-family: 'Mitr', sans-serif;
+        background: linear-gradient(180deg, #e6f7e6 0%, #cceccc 100%);
+        min-height: 100vh;
+        padding-bottom: 80px; 
+    }
+    input:focus {
+        border-color: #FFC72C !important; 
+        box-shadow: 0 0 0 5px rgba(255, 199, 44, 0.3) !important;
+    }
+    .data-card {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 1.5rem; 
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+    }
+    .data-card-header {
+        border-bottom: 2px solid;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
 
-.instructions {
-    font-size:16px;
-    background: linear-gradient(to bottom, #f0fff0, #e6ffe6);
-    padding: 18px 22px;
-    border-radius: 18px;
-    margin-bottom: 25px;
-    color: #004d00;
-    text-align:left;
-    line-height:1.8;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+    /* History Button Style */
+    .history-btn {
+        background-color: #FFC72C; /* Gold */
+        color: #004d00; /* Dark Green Text */
+        box-shadow: 0 4px #ccaa00;
+        border: 2px solid #ccaa00;
+    }
+    .history-btn:hover {
+        background-color: #ffeb80;
+        box-shadow: 0 2px #ccaa00;
+        transform: translateY(2px);
+    }
 
-label { display:block; margin:15px 0 5px; font-weight:700; text-align:left; font-size:16px; color:#005500; }
-input, button { 
-    width:100%; padding:14px; border-radius:15px; border:1px solid #b3ffb3; font-size:16px; box-sizing:border-box; margin-bottom:15px;
-}
-input:focus { outline:none; border-color:#00b300; box-shadow:0 0 12px #00b300; }
+    /* General Product/Category Box Styling */
+    .product-box {
+        border-width: 4px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        border-color: #e5e7eb;
+        padding: 1rem; 
+    }
+    .product-box:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        border-color: #009933;
+    }
+    .product-box.selected {
+        border-color: #FFC72C; /* Gold accent border */
+        background-color: #fffaf0;
+        box-shadow: 0 8px 16px rgba(0, 85, 0, 0.2);
+    }
+    .product-box.selected::before {
+        content: '\f058';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #009933;
+        font-size: 28px;
+        z-index: 10;
+        animation: pulse 1s infinite alternate;
+    }
 
-button {
-    background: linear-gradient(135deg, #00b300, #33cc33);
-    color:#fff;
-    cursor:pointer;
-    font-weight:700;
-    border:none;
-    border-radius:20px;
-    font-size:16px;
-    padding:14px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-button:hover {
-    background: linear-gradient(135deg, #33cc33, #00ff00);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
+    /* Custom sizing for the long, stacked category images */
+    .category-img-long {
+        width: 100%;
+        height: 120px; 
+        object-fit: cover;
+        background-color: #f7f7f7;
+        border-radius: 0.75rem;
+    }
 
-.product-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-.product-box {
-    background: #e6ffe6;
-    border-radius: 20px;
-    padding: 15px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: 0.3s;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.product-box img {
-    width: 120px;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    object-fit: cover;
-}
-.product-box.selected {
-    border-color: #00b300;
-    background: #ccffcc;
-}
-.product-box:hover {
-    background: #d9ffd9;
-}
-.product-label {
-    font-weight:700;
-    font-size:16px;
-    margin-top:5px;
-    color:#006600;
-    text-shadow: 0px 1px 1px rgba(0,0,0,0.1);
-}
+    /* Submission Button */
+    #submitBtn {
+        background: linear-gradient(145deg, #009933, #00cc66);
+        box-shadow: 0 6px #006622;
+        transition: all 0.15s ease;
+    }
+    #submitBtn:active {
+        background: linear-gradient(145deg, #00cc66, #009933);
+        box-shadow: 0 2px #006622;
+        transform: translateY(4px);
+    }
 
-#loaderContainer { display:none; text-align:center; margin-top:15px;}
-#loaderBar { width:100%; background:#b3ffb3; border-radius:15px; overflow:hidden; margin-top:20px;}
-#loaderProgress { width:0; height:20px; background:#00b300; border-radius:15px; }
+    /* Enhanced Copy Button Style (for Result Screen) */
+    #copyBtn {
+        background: linear-gradient(145deg, #FFC72C, #FFEB80); /* Gold Gradient */
+        box-shadow: 0 6px #ccaa00; /* Darker Gold Shadow */
+        border: 2px solid #ccaa00;
+        color: #004d00; /* Dark Green Text */
+        transition: all 0.15s ease;
+    }
+    #copyBtn:active {
+        background: linear-gradient(145deg, #FFEB80, #FFC72C);
+        box-shadow: 0 2px #ccaa00;
+        transform: translateY(4px);
+    }
 
-#result {
-    display:none;
-    background:#ccffcc;
-    padding:25px;
-    border-radius:20px;
-    margin-top:20px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.2);
-    text-align:center;
-    font-size:16px;
-}
-#result h2 {
-    color:#007700;
-    font-size:22px;
-    font-weight:800;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-}
-#result p {
-    color:#004d00;
-    font-weight:600;
-    font-size:16px;
-}
+    /* Animation for the Checkmark icon */
+    @keyframes bounce-once {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .animate-bounce-once {
+        animation: bounce-once 0.5s ease-out;
+    }
 
-.copyBtn {
-    margin-top:10px;
-    width:70%;
-    display:inline-block;
-    border-radius:20px;
-    font-weight:700;
-    text-align:center;
-    line-height:45px;
-    background: linear-gradient(135deg, #009900, #33cc33);
-    color:#fff;
-    cursor:pointer;
-    border:none;
-    font-size:16px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-}
-.copyBtn:hover { 
-    background: linear-gradient(135deg, #00cc00, #00ff00);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
+    /* Result Div Styling (Success/Premium Look) */
+    #result {
+        background: #ffffff; 
+        border: 4px solid #009933; /* Strong green border */
+        border-radius: 1.5rem;
+        box-shadow: 0 15px 40px rgba(0, 85, 0, 0.3); /* Stronger shadow */
+        animation: fadeInScale 0.5s ease-out; /* Add animation */
+    }
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
 
-/* ปุ่มลอยติดต่แอดมิน */
-.contact-admin {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #1877f2, #00a2ff);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 28px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-    z-index: 9999;
-}
-.contact-admin:hover {
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-}
-.contact-admin::after {
-    content: "ติดต่อแอดมิน";
-    position: absolute;
-    bottom: 70px;
-    right: 50%;
-    transform: translateX(50%);
-    background: #1877f2;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s, bottom 0.3s;
-}
-.contact-admin:hover::after {
-    opacity: 1;
-    bottom: 80px;
-}
+    .contact-admin {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #1877f2, #00a2ff);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 28px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+        z-index: 9999;
+    }
+    .contact-admin:hover {
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+
 </style>
 </head>
 <body>
 
-<div class="container">
-    <img src="https://i.postimg.cc/prfwD1yC/22-B127-BF3.png" class="logo">
-    <h1>Riszy Shop รับสินค้า</h1>
+<div class="container max-w-2xl mx-auto my-8 bg-white p-6 md:p-10 rounded-3xl shadow-2xl text-center border-t-8 border-primary">
+    <!-- LOGO URL (Kept the same) -->
+    <img src="https://i.postimg.cc/CdpMCWTh/IMG-9993.png" class="logo w-32 mx-auto mb-4" alt="Riszy Shop Logo">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-brand-dark mb-4 leading-tight tracking-tight">
+        Riszy Shop รับสินค้า
+    </h1>
 
-    <div class="instructions">
-        <b>วิธีใช้งานเว็บ:</b><br>
-        1. กรอกชื่อในเว็บ<br>
-        2. เลือกหมวดสินค้า<br>
-        3. เลือกสินค้าในหมวดที่ต้องการ (เลือกได้ 1 ตัว)<br>
-        4. กรอกโค้ดจากประวัติการสั่งซื้อ<br>
-        5. กดปุ่ม "ยืนยัน"<br>
-        6. รอโหลดแล้วกดปุ่มคัดลอกข้อมูล ส่งให้แอดมิน
+    <!-- Instructions Card -->
+    <div class="data-card text-left bg-light-bg mb-8 border-l-8 border-brand-green shadow-xl">
+        <b class="font-extrabold text-brand-green text-2xl flex items-center mb-4 data-card-header border-brand-dark">
+            <i class="fas fa-bullhorn mr-3 text-secondary"></i> ขั้นตอนการใช้งาน
+        </b>
+        <ol class="list-none space-y-2 text-dark-text font-medium text-lg">
+            <li class="flex items-start"><span class="text-secondary mr-2 font-bold text-xl">1.</span> กรอกชื่อในเว็บและ UID เกม</li>
+            <li class="flex items-start"><span class="text-secondary mr-2 font-bold text-xl">2.</span> <b class="text-dark-600">เลือกหมวดสินค้า และ สินค้าที่ต้องการ</b></li>
+            <li class="flex items-start"><span class="text-secondary mr-2 font-bold text-xl">3.</span> กรอกโค้ดจากประวัติการสั่งซื้อ</li>
+            <li class="flex items-start"><span class="text-secondary mr-2 font-bold text-xl">4.</span> กดปุ่ม "ยืนยัน" และคัดลอกข้อมูลส่งแอดมิน</li>
+        </ol>
     </div>
 
-    <div id="formContainer">
-        <label for="username">ชื่อในเว็บ</label>
-        <input type="text" id="username" placeholder="กรอกชื่อในเว็บ">
+    <div id="formContainer" class="space-y-8">
+        
+        <!-- CARD 1: PERSONAL & GAME INFO -->
+        <div class="data-card border-l-8 border-brand-dark">
+            <h2 class="text-2xl font-bold text-brand-dark mb-4 text-left data-card-header border-brand-green">
+                <i class="fas fa-user-circle mr-2 text-primary"></i> ข้อมูลผู้ใช้งาน
+            </h2>
 
-        <label>เลือกหมวดสินค้า ที่ซื้อ</label>
-        <div class="product-options" id="categoryOptions">
-            <div class="product-box" data-category="gem">
-                <img src="https://i.postimg.cc/SRgj2qxv/image.png" alt="เพรช">
-                <div class="product-label">เพรชฟีฟาย</div>
-            </div>
-            <div class="product-box" data-category="fluorite">
-                <img src="https://i.postimg.cc/hvNydDnb/ffios.png" alt="Fluorite/GBOX">
-                <div class="product-label">โปรเเกรมช่วยเล่น</div>
-            </div>
+            <!-- Username Input -->
+            <label for="username" class="block mb-2 font-semibold text-primary text-base text-left">ชื่อในเว็บ</label>
+            <input type="text" id="username" placeholder="กรอกชื่อในเว็บ" class="w-full p-4 mb-6 border-2 border-green-200 rounded-xl transition duration-300 placeholder-green-400 text-lg shadow-inner">
+
+            <!-- Game UID Input -->
+            <label for="gameId" class="block mb-2 font-semibold text-primary text-base text-left">UID เกม</label>
+            <input type="text" id="gameId" placeholder="กรอก UID เกม" class="w-full p-4 mb-2 border-2 border-green-200 rounded-xl transition duration-300 placeholder-green-400 text-lg shadow-inner">
         </div>
 
-        <div class="product-options" id="productContainer"></div>
+        <!-- CARD 2: CATEGORY AND PRODUCT SELECTION -->
+        <div class="data-card border-l-8 border-secondary bg-light-bg">
+            <h2 class="text-2xl font-bold text-brand-dark mb-4 text-left data-card-header border-secondary">
+                <i class="fas fa-box-open mr-2 text-secondary"></i> เลือกสินค้าที่สั่งซื้อ
+            </h2>
 
-        <label for="code">กรอกโค้ด</label>
-        <input type="text" id="code" placeholder="กรอกโค้ดจากประวัติการสั่งซื้อ">
+            <!-- Category Options (Stacked and Long Images) -->
+            <label class="block mb-3 font-extrabold text-primary text-lg text-left">เลือกหมวดสินค้า</label>
+            <div class="flex flex-col space-y-4 mb-8" id="categoryOptions">
+                
+                <!-- Category 1: เพรชฟีฟาย (GEM) -->
+                <div class="product-box border-primary rounded-2xl cursor-pointer bg-white shadow-xl hover:bg-green-50" data-category="gem">
+                    <!-- Image URL with robust fallback to placeholder -->
+                    <img src="https://i.postimg.cc/SRgj2qxv/image.png" onerror="this.onerror=null;this.src='https://placehold.co/600x120/005500/ffffff?text=เพชร+FreeFire+Placeholder';" alt="เพรช" class="category-img-long object-cover mx-auto rounded-xl mb-3 border-4 border-secondary/50 shadow-lg">
+                    <div class="product-label font-extrabold text-primary text-xl text-center">เพรชฟีฟาย</div>
+                </div>
+                
+                <!-- Category 2: โปรเเกรมช่วยเล่น (FLUORITE) -->
+                <div class="product-box border-primary rounded-2xl cursor-pointer bg-white shadow-xl hover:bg-green-50" data-category="fluorite">
+                    <!-- Image URL with robust fallback to placeholder -->
+                    <img src="https://i.postimg.cc/hvNydDnb/ffios.png" onerror="this.onerror=null;this.src='https://placehold.co/600x120/1877f2/ffffff?text=โปรแกรม+ช่วยเล่น+Placeholder';" alt="Fluorite/GBOX" class="category-img-long object-cover mx-auto rounded-xl mb-3 border-4 border-secondary/50 shadow-lg">
+                    <div class="product-label font-extrabold text-primary text-xl text-center">โปรเเกรมช่วยเล่น</div>
+                </div>
+            </div>
+            
+            <!-- Product Container (Dynamically rendered) -->
+            <label class="block mb-3 font-extrabold text-primary text-lg text-left">เลือกสินค้า</label>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="productContainer"></div>
+        </div>
+        
+        <!-- CARD 3: CODE INPUT and HISTORY BUTTON -->
+        <div class="data-card border-l-8 border-red-500">
+            <h2 class="text-2xl font-bold text-brand-dark mb-4 text-left data-card-header border-red-500">
+                <i class="fas fa-barcode mr-2 text-red-600"></i> กรอกโค้ดสั่งซื้อ
+            </h2>
+            
+            <!-- History Button -->
+            <div class="flex justify-start mb-6">
+                <a href="https://riszy.shop/?page=history" target="_blank" class="history-btn px-4 py-2 font-bold text-sm rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                    <i class="fas fa-history mr-2"></i> ดูประวัติการสั่งซื้อ
+                </a>
+            </div>
 
-        <button id="submitBtn">ยืนยัน</button>
+             <!-- Code Input -->
+            <label for="code" class="block mb-2 font-semibold text-primary text-base text-left">โค้ดสั่งซื้อ</label>
+            <input type="text" id="code" placeholder="กรอกโค้ดจากประวัติการสั่งซื้อ" class="w-full p-4 mb-2 border-2 border-green-200 rounded-xl transition duration-300 placeholder-green-400 text-lg shadow-inner">
+        </div>
+
+
+        <!-- Submit Button -->
+        <button id="submitBtn" class="w-full py-4 mt-6 font-extrabold text-white rounded-xl shadow-2xl hover:shadow-3xl transition duration-300 text-2xl uppercase tracking-wider">
+            <i class="fas fa-paper-plane mr-2"></i> ยืนยันข้อมูลเพื่อรับสินค้า
+        </button>
     </div>
 
-    <div id="loaderContainer">
-        <div>กำลังโหลด... <span id="loaderPercent">0%</span></div>
-        <div id="loaderBar"><div id="loaderProgress"></div></div>
+    <!-- Loader -->
+    <div id="loaderContainer" class="hidden text-center mt-10 p-6 bg-white rounded-2xl shadow-xl border-t-4 border-brand-green">
+        <i class="fas fa-spinner fa-spin text-5xl text-brand-green mb-4"></i>
+        <div class="text-2xl font-bold text-primary">กำลังโหลด... <span id="loaderPercent">0%</span></div>
+        <div id="loaderBar" class="w-full h-3 bg-green-200 rounded-full overflow-hidden mt-4">
+            <div id="loaderProgress" class="h-full bg-gradient-to-r from-brand-green to-secondary rounded-full transition-all duration-300 ease-in-out"></div>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">กำลังตรวจสอบความถูกต้องของโค้ดและข้อมูล</p>
     </div>
 
-    <div id="result">
-        <h2>เรียบร้อย!</h2>
-        <button class="copyBtn" id="copyBtn">คัดลอกข้อมูลทั้งหมด</button>
-        <p style="margin-top:10px; font-weight:bold;">กดคัดลอกแล้วส่งให้แอดมิน</p>
+    <!-- Result (Copy-Only Aesthetics) -->
+    <div id="result" class="hidden p-8 mt-10" style="background: #ffffff; border: 4px solid #009933; border-radius: 1.5rem; box-shadow: 0 15px 40px rgba(0, 85, 0, 0.3);">
+        
+        <!-- Header with success icon and animation -->
+        <div class="text-center mb-6">
+            <i class="fas fa-check-circle text-6xl text-brand-green mb-3 animate-bounce-once"></i>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark leading-snug">
+                <span class="text-secondary">เสร็จสิ้น!</span> ข้อมูลพร้อมคัดลอก
+            </h2>
+        </div>
+
+        <!-- Important Instruction Box -->
+        <p class="mt-3 font-bold text-dark-text text-lg mb-8 p-3 bg-yellow-50/50 border-l-4 border-yellow-500 rounded-lg text-center">
+            <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i> 
+            สำคัญ: <span class="text-red-600">กดปุ่มด้านล่างเพื่อคัดลอกข้อมูลทั้งหมด</span> และนำไปวางในแชท Facebook เพื่อรับสินค้า
+        </p>
+
+        <!-- Display Box for copied text - HIDING THIS ELEMENT VISUALLY -->
+        <!-- The content is still set here by JavaScript, but it is invisible to the user -->
+        <pre id="resultTextDisplay" class="font-sans mb-6 hidden"></pre>
+
+        <!-- Copy Button - Enhanced Style -->
+        <button class="copyBtn w-full py-5 font-extrabold rounded-xl shadow-lg hover:shadow-xl transition duration-300 text-2xl uppercase tracking-wider text-brand-dark" id="copyBtn" data-text="">
+            <i class="fas fa-copy mr-2"></i> คัดลอกข้อมูลทั้งหมด
+        </button>
     </div>
 </div>
 
-<!-- ปุ่มลอยติดต่แอดมิน -->
-<a href="https://www.facebook.com/p/Riszy-shop-61570552356915/" target="_blank" class="contact-admin"><i class="fab fa-facebook-f"></i></a>
+<!-- Floating Contact Admin Button -->
+<a href="https://www.facebook.com/p/Riszy-shop-61570552356915/" target="_blank" class="contact-admin">
+    <i class="fab fa-facebook-f"></i>
+</a>
+
+<!-- NEW: Footer -->
+<footer class="text-center mt-12 py-4 text-gray-600 text-sm font-light">
+    Copyright RSDM
+</footer>
 
 <script>
 let selectedCategory = null;
 let selectedProduct = null;
 const categoryOptions = document.querySelectorAll('#categoryOptions .product-box');
 const productContainer = document.getElementById('productContainer');
+const usernameInput = document.getElementById('username');
+const gameIdInput = document.getElementById('gameId'); 
+const codeInput = document.getElementById('code');
+const submitBtn = document.getElementById('submitBtn');
+const formContainer = document.getElementById('formContainer');
+const loaderContainer = document.getElementById('loaderContainer');
+const loaderProgress = document.getElementById('loaderProgress');
+const loaderPercent = document.getElementById('loaderPercent');
+const resultDiv = document.getElementById('result');
+const copyBtn = document.getElementById('copyBtn');
 
+// ใช้ Text แทน Image/Icon เพื่อความเสถียร 100%
 const productsData = {
     gem:[
-        {value:'68',name:'เพรช 68',img:'https://i.postimg.cc/J40C2j9y/Fluorite.png'},
-        {value:'172',name:'เพรช 172',img:'https://i.postimg.cc/Bbt7MBXQ/Fluorite.png'},
-        {value:'310',name:'เพรช 310',img:'https://i.postimg.cc/2jXK3MXM/Fluorite.png'},
-        {value:'517',name:'เพรช 517',img:'https://i.postimg.cc/TPYsKxfV/Fluorite.png'},
-        {value:'1637',name:'เพรช 1637',img:'https://i.postimg.cc/fRsphXPT/Fluorite.png'},
-        {value:'3698',name:'เพรช 3698',img:'https://i.postimg.cc/zX8FzjJ5/Fluorite.png'}
+        {value:'68',name:'เพรช 68'},
+        {value:'172',name:'เพรช 172'},
+        {value:'310',name:'เพรช 310'},
+        {value:'517',name:'เพรช 517'},
+        {value:'1637',name:'เพรช 1637'},
+        {value:'3698',name:'เพรช 3698'}
     ],
     fluorite:[
-        {value:'Fluorite1',name:'Fluorite 1 วัน',img:'https://i.postimg.cc/htfBYVQx/Fluorite.png'},
-        {value:'Fluorite7',name:'Fluorite 7 วัน',img:'https://i.postimg.cc/htfBYVQx/Fluorite.png'},
-        {value:'Fluorite31',name:'Fluorite 31 วัน',img:'https://i.postimg.cc/htfBYVQx/Fluorite.png'},
-        {value:'GBOX',name:'GBOX',img:'https://i.postimg.cc/GpKZ53Jz/Fluorite.png'}
+        {value:'Fluorite1',name:'Fluorite 1 วัน'},
+        {value:'Fluorite7',name:'Fluorite 7 วัน'},
+        {value:'Fluorite31',name:'Fluorite 31 วัน'},
+        {value:'GBOX',name:'GBOX'}
     ]
 };
 
+// 1. Category Selection Logic
 categoryOptions.forEach(box=>{
     box.addEventListener('click',()=>{
         categoryOptions.forEach(b=>b.classList.remove('selected'));
         box.classList.add('selected');
         selectedCategory = box.getAttribute('data-category');
         selectedProduct = null;
+        productContainer.innerHTML = ''; // Clear products when category changes
         renderProducts(selectedCategory);
     });
 });
 
+// 2. Product Rendering Logic (Text Only)
 function renderProducts(category){
     productContainer.innerHTML='';
     productsData[category].forEach(p=>{
         const div = document.createElement('div');
-        div.className='product-box';
+        // ใช้ Flexbox และ h-24 เพื่อจัดกึ่งกลางและทำให้ขนาดกล่องเท่ากัน
+        div.className='product-box border-primary rounded-xl cursor-pointer bg-white shadow-lg hover:bg-green-50 flex flex-col justify-center items-center h-24';
         div.setAttribute('data-value',p.value);
-        div.innerHTML = `<img src="${p.img}" alt="${p.name}"><div class="product-label">${p.name}</div>`;
+        
+        // แสดงผลเป็นข้อความล้วน
+        div.innerHTML = `<div class="product-label font-extrabold text-primary text-lg text-center leading-snug">${p.name}</div>`;
+        
         div.addEventListener('click',()=>{
             productContainer.querySelectorAll('.product-box').forEach(b=>b.classList.remove('selected'));
             div.classList.add('selected');
@@ -301,6 +392,7 @@ function renderProducts(category){
     });
 }
 
+// 3. Code Validation Logic (Unchanged)
 function validateCode(code){
     if(!selectedProduct) return false;
     if(selectedCategory=='gem'){
@@ -312,43 +404,41 @@ function validateCode(code){
             'Fluorite31': /^RSFD31\d+$/,
             'GBOX': /^RSGB29\d+$/
         };
-        return patterns[selectedProduct].test(code);
+        return patterns[selectedProduct] ? patterns[selectedProduct].test(code) : false;
     }
     return false;
 }
 
-const submitBtn = document.getElementById('submitBtn');
-const usernameInput = document.getElementById('username');
-const codeInput = document.getElementById('code');
-const formContainer = document.getElementById('formContainer');
-const loaderContainer = document.getElementById('loaderContainer');
-const loaderProgress = document.getElementById('loaderProgress');
-const loaderPercent = document.getElementById('loaderPercent');
-const resultDiv = document.getElementById('result');
-const copyBtn = document.getElementById('copyBtn');
-
+// 4. Submission and Loading Logic
 submitBtn.addEventListener('click',()=>{
     const username = usernameInput.value.trim();
+    const gameId = gameIdInput.value.trim(); 
     const code = codeInput.value.trim();
-    if(!username||!selectedCategory||!selectedProduct||!code){
+
+    // Validation
+    if(!username || !gameId || !selectedCategory || !selectedProduct || !code){
         Swal.fire({
             icon: 'error',
             title: 'เกิดข้อผิดพลาด',
-            text: 'กรุณากรอกข้อมูลครบทุกช่อง'
+            text: 'กรุณากรอกข้อมูลและเลือกสินค้าให้ครบทุกช่อง',
+            confirmButtonColor: '#005500'
         });
         return; 
     }
+    
+    // Validate code based on selected product
     if(!validateCode(code)){
         Swal.fire({
             icon: 'error',
-            title: 'เกิดข้อผิดพลาด',
-            text: 'ไม่พบโค้ดที่กรอก'
+            title: 'โค้ดไม่ถูกต้อง',
+            text: 'โค้ดที่กรอกไม่ตรงกับสินค้าที่ท่านเลือก กรุณาตรวจสอบอีกครั้ง',
+            confirmButtonColor: '#005500'
         });
         return; 
     }
 
-    formContainer.style.display='none';
-    loaderContainer.style.display='block';
+    formContainer.classList.add('hidden');
+    loaderContainer.classList.remove('hidden');
     loaderProgress.style.width='0%'; loaderPercent.textContent='0%';
     let progress=0;
     const interval = setInterval(()=>{
@@ -358,26 +448,65 @@ submitBtn.addEventListener('click',()=>{
         loaderPercent.textContent=progress+'%';
         if(progress===100){
             clearInterval(interval);
-            loaderContainer.style.display='none';
-            showResult(username, selectedCategory, selectedProduct, code);
+            loaderContainer.classList.add('hidden');
+            showResult(username, gameId, selectedCategory, selectedProduct, code);
         }
     },200);
 });
 
-function showResult(username, category, product, code){
-    resultDiv.style.display='block';
-    copyBtn.dataset.text = `ชื่อ: ${username}\nหมวด: ${category}\nสินค้า: ${product}\nโค้ด: ${code}`;
+// 5. Show Result and Copy Logic
+function showResult(username, gameId, category, product, code){
+    resultDiv.classList.remove('hidden');
+    
+    // Function to safely get the name from the data structure
+    const getSelectionName = (cat, val) => {
+        const item = productsData[cat].find(p => p.value === val);
+        return item ? item.name : val;
+    };
+    
+    const categoryName = (category === 'gem') ? 'เพรชฟีฟาย' : 'โปรเเกรมช่วยเล่น';
+    const productName = getSelectionName(category, product);
+
+    // The text to be copied
+    const copyText = 
+`ชื่อในเว็บ: ${username}
+UID เกม: ${gameId}
+หมวดสินค้า: ${categoryName}
+สินค้าที่เลือก: ${productName}
+โค้ดสั่งซื้อ: ${code}`;
+
+    // Set text to both the hidden element and the data-text attribute
+    copyBtn.dataset.text = copyText;
+    document.getElementById('resultTextDisplay').textContent = copyText; // Still set content even if hidden
 }
 
 copyBtn.addEventListener('click',()=>{
     const text = copyBtn.dataset.text;
-    navigator.clipboard.writeText(text).then(()=>{
+    
+    // ใช้วิธีคัดลอกผ่าน textarea เพื่อให้ใช้งานได้ใน iFrame
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        // Fallback for secure copy in iframe environments
+        document.execCommand('copy'); 
         Swal.fire({
             icon: 'success',
-            title: 'สำเร็จ',
-            text: 'คัดลอกข้อมูลเรียบร้อย'
+            title: 'คัดลอกสำเร็จ!',
+            text: 'ข้อมูลทั้งหมดถูกคัดลอกเรียบร้อยแล้ว กรุณาส่งให้แอดมิน',
+            confirmButtonColor: '#005500'
         });
-    });
+    } catch (err) {
+        Swal.fire({
+            icon: 'error',
+            title: 'คัดลอกไม่สำเร็จ',
+            text: 'ไม่สามารถคัดลอกได้ กรุณาลองคัดลอกด้วยตัวเอง',
+            confirmButtonColor: '#005500'
+        });
+    } finally {
+        document.body.removeChild(textarea);
+    }
 });
 </script>
 </body>
